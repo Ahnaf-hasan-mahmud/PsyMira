@@ -1,0 +1,68 @@
+.section {
+  padding-block: 40px 96px;
+  background: var(--bg);
+}
+.band {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 80px 32px;
+  border-radius: var(--r-2xl);
+  background: linear-gradient(135deg, #8b6df0 0%, #a78bfa 55%, #c4b5fd 100%);
+  box-shadow: var(--shadow-glow);
+}
+.particles {
+  z-index: 0;
+  opacity: 0.7;
+}
+.glowA,
+.glowB {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+.glowA {
+  width: 280px;
+  height: 280px;
+  background: rgba(255, 255, 255, 0.3);
+  top: -120px;
+  left: -60px;
+}
+.glowB {
+  width: 240px;
+  height: 240px;
+  background: rgba(247, 239, 231, 0.35);
+  bottom: -120px;
+  right: -40px;
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.sub {
+  position: relative;
+  z-index: 1;
+  margin: 22px auto 0;
+  max-width: 520px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.08rem;
+  line-height: 1.6;
+}
+.actions {
+  position: relative;
+  z-index: 1;
+  margin-top: 34px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 560px) {
+  .band {
+    padding: 56px 22px;
+  }
+}

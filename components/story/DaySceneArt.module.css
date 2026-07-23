@@ -1,0 +1,82 @@
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.sky {
+  position: absolute;
+  inset: 0;
+  transition: background 1.2s var(--ease-out);
+}
+
+/* per-scene moods */
+.morning { background: linear-gradient(180deg, #fbeede 0%, #f1e0f0 45%, #ddd0f7 100%); }
+.busstop { background: linear-gradient(180deg, #dfd6f0 0%, #cdbcec 55%, #b7a2e6 100%); }
+.commute { background: linear-gradient(180deg, #e9e2f8 0%, #d7c9f2 55%, #bfa9ec 100%); }
+.office  { background: linear-gradient(180deg, #f4eefb 0%, #e6dbf7 55%, #cfbcf1 100%); }
+.lunch   { background: linear-gradient(180deg, #fbf1e6 0%, #efe1f2 50%, #ddd0f7 100%); }
+.desk    { background: linear-gradient(180deg, #e7e0f6 0%, #d5c8f0 55%, #bda9ea 100%); }
+.phone   { background: linear-gradient(180deg, #efe6f8 0%, #dcc9f0 55%, #c0a3e8 100%); }
+.rain    { background: linear-gradient(180deg, #c9bfe0 0%, #b3a3d8 55%, #9a86c9 100%); }
+.dinner  { background: linear-gradient(180deg, #f6ecdd 0%, #ecd9df 45%, #d3bfe8 100%); }
+.home    { background: linear-gradient(180deg, #cfc3ea 0%, #b6a4dd 55%, #8f78c4 100%); }
+.night   { background: linear-gradient(180deg, #4a3d7a 0%, #6b58a3 45%, #9a86c9 100%); }
+
+.orb {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #ffe9c4 55%, rgba(255, 233, 196, 0) 75%);
+  filter: blur(0.4px);
+}
+.rain .orb { display: none; }
+
+.moon {
+  position: absolute;
+  top: 14%;
+  right: 18%;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #fff 0%, #e9e0fb 60%, rgba(233, 224, 251, 0) 78%);
+  box-shadow: 0 0 40px rgba(233, 224, 251, 0.6);
+}
+
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+}
+
+.drop {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 46px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6));
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(110, 90, 160, 0.14) 100%);
+}

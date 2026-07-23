@@ -1,0 +1,47 @@
+.card {
+  position: relative;
+  border-radius: var(--r-xl);
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+}
+
+.solid {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  box-shadow: var(--shadow-lg);
+}
+
+/* padding scale */
+.pad_sm {
+  padding: 18px;
+}
+.pad_md {
+  padding: 28px;
+}
+.pad_lg {
+  padding: 38px;
+}
+
+.interactive {
+  cursor: pointer;
+}
+.interactive:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+
+@media (max-width: 640px) {
+  .pad_lg {
+    padding: 26px;
+  }
+  .pad_md {
+    padding: 22px;
+  }
+}

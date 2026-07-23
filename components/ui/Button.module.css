@@ -1,0 +1,122 @@
+.wrap {
+  display: inline-flex;
+}
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+  overflow: hidden;
+  isolation: isolate;
+  transition: box-shadow 0.4s var(--ease-out), background 0.4s var(--ease-out),
+    color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.label {
+  position: relative;
+  z-index: 2;
+}
+.icon {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+}
+
+/* ---- Sizes ---- */
+.md {
+  padding: 12px 22px;
+  font-size: 15px;
+  min-height: 46px;
+}
+.lg {
+  padding: 16px 30px;
+  font-size: 16.5px;
+  min-height: 56px;
+}
+
+.full {
+  width: 100%;
+}
+
+/* ---- Primary (gradient) ---- */
+.primary {
+  color: #fff;
+  background: var(--grad-primary);
+  box-shadow: 0 10px 26px rgba(139, 109, 240, 0.32);
+}
+.primary::before {
+  /* hover sheen layer */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #b69cff 0%, #9a7df5 100%);
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 0.4s var(--ease-out);
+}
+.primary:hover {
+  box-shadow: 0 16px 36px rgba(139, 109, 240, 0.42);
+}
+.primary:hover::before {
+  opacity: 1;
+}
+
+/* ---- Secondary (soft glass) ---- */
+.secondary {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+}
+.secondary:hover {
+  background: #fff;
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+/* ---- Ghost ---- */
+.ghost {
+  color: var(--accent-deep);
+  background: transparent;
+}
+.ghost:hover {
+  background: var(--accent-soft);
+}
+
+/* ---- Ripple ---- */
+.rippleLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.ripple {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: -7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transform: scale(0);
+  animation: ripple 0.6s var(--ease-out) forwards;
+}
+.secondary .ripple,
+.ghost .ripple {
+  background: rgba(167, 139, 250, 0.35);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(18);
+    opacity: 0;
+  }
+}

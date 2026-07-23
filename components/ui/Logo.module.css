@@ -1,0 +1,27 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.glyph {
+  filter: drop-shadow(0 4px 10px rgba(139, 109, 240, 0.28));
+  transition: transform 0.5s var(--ease-out);
+}
+
+.link:hover .glyph {
+  transform: rotate(-8deg) scale(1.05);
+}
+
+.word {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}

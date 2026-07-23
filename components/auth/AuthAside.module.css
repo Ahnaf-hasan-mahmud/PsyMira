@@ -1,0 +1,94 @@
+.aside {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  background: linear-gradient(160deg, #8b6df0 0%, #a78bfa 50%, #c4b5fd 100%);
+  color: #fff;
+  border-radius: var(--r-2xl);
+}
+.particles {
+  z-index: 0;
+  opacity: 0.6;
+}
+.glowA,
+.glowB {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  z-index: 0;
+}
+.glowA {
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.25);
+  top: -100px;
+  right: -80px;
+}
+.glowB {
+  width: 260px;
+  height: 260px;
+  background: rgba(247, 239, 231, 0.3);
+  bottom: -120px;
+  left: -60px;
+}
+
+.top {
+  position: relative;
+  z-index: 1;
+}
+.top :global(.glyph) {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+}
+.top span {
+  color: #fff !important;
+}
+
+.center {
+  position: relative;
+  z-index: 1;
+  margin: auto 0;
+  text-align: center;
+}
+.headline {
+  margin-top: 28px;
+  color: #fff;
+  font-size: 1.9rem;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+.copy {
+  margin: 16px auto 0;
+  max-width: 320px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.quoteCard {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--r-lg);
+  padding: 22px;
+}
+.stars {
+  display: flex;
+  gap: 3px;
+  color: #ffe9a8;
+  margin-bottom: 12px;
+}
+.quoteCard blockquote {
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: #fff;
+}
+.quoteCard figcaption {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}

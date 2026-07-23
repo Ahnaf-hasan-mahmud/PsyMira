@@ -1,0 +1,130 @@
+.section {
+  padding-block: 96px;
+  background: var(--grad-page);
+  position: relative;
+  overflow: hidden;
+}
+
+.head {
+  max-width: 640px;
+  margin: 0 auto 52px;
+  text-align: center;
+}
+.title {
+  margin-top: 16px;
+  font-size: clamp(2rem, 3.6vw, 2.9rem);
+  letter-spacing: -0.03em;
+}
+.lede {
+  margin-top: 18px;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.4);
+}
+.dots {
+  display: flex;
+  gap: 7px;
+}
+.dots i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+}
+.chromeTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  padding: 22px;
+}
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.mood {
+  grid-column: span 2;
+}
+.tree {
+  grid-column: span 1;
+  display: flex;
+  flex-direction: column;
+}
+.tree > div:last-child {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.pie {
+  grid-column: span 1;
+}
+.heat {
+  grid-column: span 2;
+}
+
+.panelHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 10px;
+}
+.panelTitle {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.panelSub {
+  font-size: 12.5px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .mood,
+  .heat {
+    grid-column: span 2;
+  }
+}
+@media (max-width: 560px) {
+  .section {
+    padding-block: 68px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .mood,
+  .heat,
+  .tree,
+  .pie {
+    grid-column: span 1;
+  }
+}

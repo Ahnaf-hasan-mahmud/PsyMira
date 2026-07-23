@@ -1,0 +1,129 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transition: background 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out),
+    border-color 0.4s var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+
+.scrolled {
+  background: rgba(248, 246, 250, 0.72);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-bottom-color: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  height: var(--nav-h);
+  padding-inline: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.link {
+  position: relative;
+  padding: 8px 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: var(--r-pill);
+  transition: color 0.3s var(--ease-out), background 0.3s var(--ease-out);
+}
+.link:hover {
+  color: var(--text);
+  background: rgba(167, 139, 250, 0.1);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.signin {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  padding: 8px 6px;
+  transition: color 0.3s var(--ease-out);
+}
+.signin:hover {
+  color: var(--accent-deep);
+}
+
+.burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border);
+}
+
+/* mobile sheet */
+.scrim {
+  position: fixed;
+  inset: 0;
+  top: var(--nav-h);
+  background: rgba(43, 41, 48, 0.28);
+  backdrop-filter: blur(3px);
+  z-index: 90;
+}
+.sheet {
+  position: absolute;
+  top: calc(var(--nav-h) - 4px);
+  left: 16px;
+  right: 16px;
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+}
+.sheetLink {
+  padding: 14px 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  border-radius: var(--r-md);
+}
+.sheetLink:hover {
+  background: var(--bg-secondary);
+}
+.sheetActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+  .links,
+  .actions {
+    display: none;
+  }
+  .burger {
+    display: inline-flex;
+  }
+}

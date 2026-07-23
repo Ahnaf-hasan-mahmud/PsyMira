@@ -1,0 +1,50 @@
+.page { display: flex; flex-direction: column; gap: 24px; }
+.hero { position: relative; overflow: hidden; padding: 34px 38px; border: 1px solid var(--border); border-radius: var(--r-2xl); background: linear-gradient(140deg, #f4effb, #fff 65%, #f7efe7); box-shadow: var(--shadow-sm); }
+.hero::after { content: ""; position: absolute; width: 230px; height: 230px; right: -70px; top: -120px; border-radius: 50%; background: rgba(167, 139, 250, .2); filter: blur(35px); }
+.eyebrow { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; color: var(--accent-deep); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.title { position: relative; z-index: 1; margin-top: 12px; font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -.045em; }
+.lede { position: relative; z-index: 1; max-width: 650px; margin-top: 12px; color: var(--text-secondary); font-size: 1.04rem; }
+.journalGrid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(270px, .7fr); gap: 22px; align-items: start; }
+.editor, .history, .timelinePanel { padding: 28px; border: 1px solid var(--border); border-radius: var(--r-2xl); background: var(--card); box-shadow: var(--shadow-sm); }
+.sectionHead { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+.smallLabel { display: block; margin-bottom: 5px; color: var(--accent-deep); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.sectionTitle { font-size: 1.28rem; }
+.dateInput { padding: 9px 12px; color: var(--text-secondary); border: 1px solid var(--border); border-radius: var(--r-md); background: var(--bg); }
+.field { display: flex; flex-direction: column; margin-top: 24px; }
+.prompt { font-family: var(--font-heading); font-size: 1.08rem; font-weight: 700; }
+.hint, .muted { margin-top: 4px; color: var(--text-tertiary); font-size: .88rem; }
+.field textarea { width: 100%; resize: vertical; margin-top: 12px; padding: 17px 18px; line-height: 1.6; border: 1.5px solid var(--border); border-radius: var(--r-lg); background: var(--bg); transition: border-color .25s var(--ease-out), background .25s var(--ease-out); }
+.field textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(167, 139, 250, .13); }
+.primaryButton { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding: 12px 21px; color: #fff; font-weight: 700; border-radius: var(--r-pill); background: var(--grad-primary); box-shadow: 0 8px 20px rgba(139, 109, 240, .25); }
+.entryList { display: flex; flex-direction: column; gap: 9px; margin-top: 20px; }
+.entryButton { width: 100%; padding: 14px; text-align: left; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--bg); }
+.entryButton span { display: block; font-weight: 700; }
+.entryButton small { display: block; overflow: hidden; margin-top: 3px; color: var(--text-tertiary); white-space: nowrap; text-overflow: ellipsis; }
+.entryActive { border-color: var(--accent-2); background: #f5f1fb; }
+.empty { margin-top: 22px; padding: 20px; text-align: center; color: var(--text-tertiary); border: 1px dashed var(--border-strong); border-radius: var(--r-lg); }
+.summaryGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.summaryCard { padding: 22px; border: 1px solid var(--border); border-radius: var(--r-xl); background: var(--card); box-shadow: var(--shadow-sm); }
+.summaryCard strong { display: block; color: var(--accent-deep); font-family: var(--font-heading); font-size: 1.8rem; }
+.summaryCard span { display: block; margin-top: 4px; color: var(--text-secondary); font-size: .86rem; }
+.timeline { display: flex; flex-direction: column; }
+.dayGroup { display: grid; grid-template-columns: 190px 1fr; gap: 24px; padding: 24px 0; border-top: 1px solid var(--border); }
+.dayGroup:first-child { border-top: 0; padding-top: 0; }
+.dayDate { display: flex; align-items: center; gap: 12px; }
+.dayNumber { display: grid; flex: 0 0 48px; height: 48px; place-items: center; color: var(--accent-deep); font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; border-radius: var(--r-md); background: var(--accent-soft); }
+.dayDate strong, .dayDate small { display: block; }
+.dayDate small { color: var(--text-tertiary); }
+.dayActivities { display: flex; flex-direction: column; gap: 10px; }
+.activityItem { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--bg); }
+.activityIcon { display: grid; flex: 0 0 42px; height: 42px; place-items: center; border-radius: var(--r-md); }
+.breathIcon { color: #6f55cf; background: #e9e2fb; }
+.storyIcon { color: #9a6a3d; background: #f7e9dc; }
+.activityCopy { flex: 1; min-width: 0; }
+.activityCopy strong, .activityCopy span { display: block; }
+.activityCopy span, .activityItem time { color: var(--text-tertiary); font-size: .82rem; }
+.insightEmpty { padding: 55px 20px; text-align: center; border: 1px dashed var(--border-strong); border-radius: var(--r-xl); background: var(--bg); }
+.emptyOrb { display: grid; width: 58px; height: 58px; margin: 0 auto 16px; place-items: center; color: var(--accent-deep); border-radius: 50%; background: var(--accent-soft); }
+.insightEmpty p { margin-top: 8px; color: var(--text-secondary); }
+.emptyActions { display: flex; justify-content: center; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+.emptyActions a { display: inline-flex; align-items: center; gap: 7px; padding: 10px 17px; color: var(--accent-deep); font-weight: 700; border: 1px solid var(--accent-soft); border-radius: var(--r-pill); background: #fff; }
+@media (max-width: 950px) { .journalGrid { grid-template-columns: 1fr; } .summaryGrid { grid-template-columns: 1fr 1fr; } .dayGroup { grid-template-columns: 1fr; gap: 14px; } }
+@media (max-width: 600px) { .hero, .editor, .history, .timelinePanel { padding: 23px 20px; } .summaryGrid { grid-template-columns: 1fr 1fr; gap: 10px; } .summaryCard { padding: 17px; } .sectionHead { flex-direction: column; } .dateInput { width: 100%; } .activityItem { align-items: flex-start; } .activityItem time { display: none; } }

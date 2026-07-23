@@ -1,0 +1,133 @@
+.scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 540px;
+  margin-inline: auto;
+}
+
+.aura {
+  position: absolute;
+  inset: -8%;
+  background: var(--grad-aura);
+  filter: blur(6px);
+  z-index: 0;
+}
+
+.particles {
+  z-index: 1;
+}
+
+/* clouds */
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  filter: blur(14px);
+  z-index: 1;
+}
+.cloud1 {
+  width: 150px;
+  height: 54px;
+  top: 22%;
+  left: 6%;
+}
+.cloud2 {
+  width: 120px;
+  height: 44px;
+  top: 60%;
+  right: 4%;
+}
+
+/* stars */
+.star {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #c4b5fd 60%, transparent 75%);
+  box-shadow: 0 0 10px rgba(196, 181, 253, 0.9);
+}
+
+/* tree */
+.treeWrap {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  width: 74%;
+  z-index: 3;
+  transform-origin: 50% 100%;
+}
+.tree {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 22px 40px rgba(139, 109, 240, 0.35));
+}
+.coreGlow {
+  position: absolute;
+  top: 26%;
+  left: 50%;
+  width: 46%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(221, 214, 254, 0.4) 45%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  z-index: -1;
+}
+
+/* spirit */
+.spirit {
+  position: absolute;
+  top: 14%;
+  right: 8%;
+  width: 76px;
+  z-index: 4;
+  filter: drop-shadow(0 10px 22px rgba(167, 139, 250, 0.4));
+}
+.spiritHalo {
+  position: absolute;
+  inset: -26%;
+  background: radial-gradient(
+    circle,
+    rgba(221, 214, 254, 0.7) 0%,
+    transparent 65%
+  );
+  border-radius: 50%;
+  z-index: -1;
+}
+
+/* ground glow */
+.ground {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: 62%;
+  height: 36px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse,
+    rgba(167, 139, 250, 0.4) 0%,
+    transparent 70%
+  );
+  filter: blur(8px);
+  z-index: 2;
+}
+
+@media (max-width: 980px) {
+  .scene {
+    max-width: 420px;
+  }
+}
+@media (max-width: 520px) {
+  .scene {
+    max-width: 320px;
+  }
+  .spirit {
+    width: 60px;
+  }
+}

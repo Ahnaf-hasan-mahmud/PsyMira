@@ -1,0 +1,13 @@
+.wrap {
+  position: relative;
+  margin-inline: auto;
+}
+.label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+}

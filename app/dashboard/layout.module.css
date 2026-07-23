@@ -1,0 +1,21 @@
+.shell {
+  min-height: 100dvh;
+  background: var(--bg);
+}
+.main {
+  margin-left: 264px;
+  padding: 30px 34px 60px;
+  min-height: 100dvh;
+}
+
+@media (max-width: 1024px) {
+  .main {
+    margin-left: 0;
+    padding: 24px 20px 56px;
+  }
+}
+@media (max-width: 520px) {
+  .main {
+    padding: 20px 14px 48px;
+  }
+}

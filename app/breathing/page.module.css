@@ -1,0 +1,293 @@
+/* ============================================================
+   Breathing page — dedicated, focused space.
+   ============================================================ */
+
+/* ---- hero ---- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-2xl);
+  padding: 44px 40px;
+  margin-bottom: 24px;
+  color: #fff;
+  background: linear-gradient(140deg, #8b6df0 0%, #a78bfa 55%, #c4b5fd 100%);
+  box-shadow: var(--shadow-glow);
+}
+.heroGlow {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  filter: blur(60px);
+  top: -160px;
+  right: -80px;
+}
+.eyebrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+.heroTitle {
+  position: relative;
+  margin-top: 14px;
+  color: #fff;
+  font-size: clamp(1.7rem, 3.6vw, 2.5rem);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+.heroBody {
+  position: relative;
+  margin-top: 16px;
+  max-width: 620px;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
+}
+.heroMeta {
+  position: relative;
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.metaPill {
+  padding: 7px 15px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--r-pill);
+  backdrop-filter: blur(6px);
+}
+
+/* ---- player block ---- */
+.playerBlock {
+  margin-bottom: 34px;
+}
+
+/* ---- guides ---- */
+.guidesHead {
+  margin-bottom: 22px;
+}
+.guidesTitle {
+  font-size: 1.55rem;
+  letter-spacing: -0.02em;
+}
+.guidesSub {
+  margin-top: 8px;
+  max-width: 620px;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.guideGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.guide {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+  border-top: 4px solid var(--gc);
+  transition: box-shadow 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+}
+.guide:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.guideTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.guideDot {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #fff 0%, var(--gc-soft) 45%, var(--gc) 100%);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--gc) 40%, transparent);
+}
+.guideName {
+  font-size: 1.18rem;
+  letter-spacing: -0.01em;
+}
+.guideRhythm {
+  display: block;
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.guideDivider {
+  margin: 0 7px;
+  opacity: 0.6;
+}
+
+.guideAbout {
+  flex: 1;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+/* concise "best when" cue */
+.whenRow {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.whenTag {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--gc);
+}
+.whenText {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.guideLabel {
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gc);
+}
+.guideText {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* steps */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+.stepNum {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gc);
+  background: color-mix(in srgb, var(--gc) 14%, transparent);
+}
+
+/* two-column benefits / best-for */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 4px;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.listItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+.tick,
+.arrow {
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: var(--gc);
+  background: color-mix(in srgb, var(--gc) 14%, transparent);
+}
+
+.note {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.note strong {
+  color: var(--text);
+}
+
+.disclaimer {
+  margin-top: 26px;
+  padding: 16px 20px;
+  border-radius: var(--r-lg);
+  background: #fbf7ff;
+  border: 1px dashed var(--border-strong);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ---- responsive ---- */
+@media (max-width: 1080px) {
+  .guideGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .guideGrid {
+    grid-template-columns: 1fr;
+  }
+  .hero {
+    padding: 34px 24px;
+  }
+}
+@media (max-width: 420px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+}
