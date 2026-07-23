@@ -202,3 +202,64 @@ export const Google = ({ size = 18, className }: IconProps) => (
     />
   </svg>
 );
+
+/* ---- Relaxation module icons ---- */
+export const Waves = ({ size = 18, className }: IconProps) => (
+  <svg {...base(size)} className={className} aria-hidden="true">
+    <path d="M2 7c1.6 0 1.6-1.6 3.2-1.6S6.8 7 8.4 7 10 5.4 11.6 5.4 13.2 7 14.8 7s1.6-1.6 3.2-1.6S19.6 7 22 7" />
+    <path d="M2 12c1.6 0 1.6-1.6 3.2-1.6S6.8 12 8.4 12 10 10.4 11.6 10.4 13.2 12 14.8 12s1.6-1.6 3.2-1.6S19.6 12 22 12" />
+    <path d="M2 17c1.6 0 1.6-1.6 3.2-1.6S6.8 17 8.4 17 10 15.4 11.6 15.4 13.2 17 14.8 17s1.6-1.6 3.2-1.6S19.6 17 22 17" />
+  </svg>
+);
+
+export const Heart = ({
+  size = 18,
+  className,
+  filled = false,
+}: IconProps & { filled?: boolean }) => (
+  <svg
+    {...base(size)}
+    className={className}
+    fill={filled ? "currentColor" : "none"}
+    aria-hidden="true"
+  >
+    <path d="M12 20.5s-7.2-4.4-9.3-8.7C1.2 8.6 2.9 5.2 6.2 5.2c2 0 3.3 1.2 4 2.3.7-1.1 2-2.3 4-2.3 3.3 0 5 3.4 3.5 6.6-2.1 4.3-9.3 8.7-9.3 8.7Z" />
+  </svg>
+);
+
+export const Volume = ({ size = 18, className }: IconProps) => (
+  <svg {...base(size)} className={className} aria-hidden="true">
+    <path d="M4 9v6h3.5L13 20V4L7.5 9H4Z" />
+    <path d="M16.5 8.5a5 5 0 0 1 0 7" />
+    <path d="M19 6a8 8 0 0 1 0 12" />
+  </svg>
+);
+
+export const VolumeMute = ({ size = 18, className }: IconProps) => (
+  <svg {...base(size)} className={className} aria-hidden="true">
+    <path d="M4 9v6h3.5L13 20V4L7.5 9H4Z" />
+    <path d="m17 9 5 6M22 9l-5 6" />
+  </svg>
+);
+
+export const Clock = ({ size = 18, className }: IconProps) => (
+  <svg {...base(size)} className={className} aria-hidden="true">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7.5V12l3 2" />
+  </svg>
+);
+
+export const Headphones = ({ size = 18, className }: IconProps) => (
+  <svg {...base(size)} className={className} aria-hidden="true">
+    <path d="M4 13a8 8 0 0 1 16 0" />
+    <path d="M4 13v3.5A2.5 2.5 0 0 0 6.5 19H7a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H4Z" />
+    <path d="M20 13v3.5a2.5 2.5 0 0 1-2.5 2.5H17a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h3Z" />
+  </svg>
+);
+
+export const Leaf = ({ size = 18, className }: IconProps) => (
+  <svg {...base(size)} className={className} aria-hidden="true">
+    <path d="M4 20c0-9 6-15 16-15 0 10-6 15-15 15" />
+    <path d="M4 20c3-6 7-9 12-11" />
+  </svg>
+);

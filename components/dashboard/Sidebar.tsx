@@ -10,6 +10,7 @@ import {
   Grid,
   Book,
   Wind,
+  Waves,
   Feather,
   Compass,
   Logout,
@@ -22,6 +23,7 @@ const NAV = [
   { label: "Dashboard", icon: Grid, href: "/dashboard" },
   { label: "Stories", icon: Book, href: "/story" },
   { label: "Breathing", icon: Wind, href: "/breathing" },
+  { label: "Relaxation", icon: Waves, href: "/relaxation" },
   { label: "Journal", icon: Feather, href: "/dashboard/journal" },
   { label: "Insights", icon: Compass, href: "/dashboard/insights" },
 ];

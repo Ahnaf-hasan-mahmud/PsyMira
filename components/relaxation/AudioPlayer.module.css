@@ -1,0 +1,133 @@
+.player {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+/* ---- progress ---- */
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.time {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  min-width: 34px;
+  text-align: center;
+}
+
+/* ---- shared range styling ---- */
+.progress,
+.volume {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) var(--pct, 0%),
+    var(--border-strong) var(--pct, 0%),
+    var(--border-strong) 100%
+  );
+  transition: opacity 0.2s var(--ease-out);
+}
+.progress {
+  flex: 1;
+}
+.progress:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.progress::-webkit-slider-thumb,
+.volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s var(--ease-out);
+}
+.progress::-webkit-slider-thumb:hover,
+.volume::-webkit-slider-thumb:hover {
+  transform: scale(1.18);
+}
+.progress::-moz-range-thumb,
+.volume::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+.progress:focus-visible,
+.volume:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---- transport row ---- */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.play {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 40%, transparent);
+  flex-shrink: 0;
+}
+.stop {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.stop:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.volumeGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  margin-left: 4px;
+}
+.volIcon {
+  display: grid;
+  place-items: center;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+.volume {
+  flex: 1;
+  min-width: 60px;
+}
+
+.play:focus-visible,
+.stop:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
