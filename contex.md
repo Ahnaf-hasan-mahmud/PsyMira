@@ -3,15 +3,12 @@
 **Overview**
 PsyMira is a mental wellness web application intended to help users develop healthy habits, monitor their mood, and practice self-care through tools like breathing exercises, relaxation audio, journaling, and interactive story-based assessments.
 
-**Important Note for AI Agents**
-> **WARNING:** The `README.md` file contains outdated architectural information. It states the project uses a MERN stack (MongoDB, Express, React, Node.js). **This is incorrect for the current codebase.**
-> 
-> **The ACTUAL Tech Stack is:**
-> - **Frontend/Framework:** Next.js 15 (App Router), React 18, TypeScript
-> - **Styling:** Tailwind CSS, Framer Motion (for animations)
-> - **Data Visualization:** Recharts
-> - **Backend/Database/Auth:** Supabase (PostgreSQL, Supabase Auth)
-> - **State Management:** React Context / Custom Hooks utilizing `localStorage` for offline-first data (e.g., `lib/activityStore.ts`).
+**Tech Stack Summary**
+- **Frontend/Framework:** Next.js 15 (App Router), React 18, TypeScript
+- **Styling:** Tailwind CSS, Framer Motion (for animations)
+- **Data Visualization:** Recharts
+- **Backend/Database/Auth:** Supabase (PostgreSQL, Supabase Auth)
+- **State Management:** React Context / Custom Hooks utilizing `localStorage` for offline-first data (e.g., `lib/activityStore.ts`).
 
 ---
 
