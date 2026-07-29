@@ -146,27 +146,12 @@ Never miss your wellness routine.
 
 # 🚀 Tech Stack
 
-## Frontend
-
-- React
-- Tailwind CSS
-- React Router
-- Axios
-
-## Backend
-
-- Node.js
-- Express.js
-
-## Database
-
-- MongoDB
-- Mongoose
-
-## Authentication
-
-- JSON Web Token (JWT)
-- bcrypt
+- **Framework:** Next.js 15 (App Router)
+- **Frontend:** React 18, TypeScript, Tailwind CSS, Framer Motion
+- **Data Visualization:** Recharts
+- **Backend & Database:** Supabase (PostgreSQL)
+- **Authentication:** Supabase Auth
+- **State Management:** React Context / Custom Hooks (with LocalStorage)
 
 ---
 
@@ -175,33 +160,15 @@ Never miss your wellness routine.
 ```
 PsyMira
 │
-├── frontend
-│   ├── public
-│   ├── src
-│   │   ├── assets
-│   │   ├── components
-│   │   ├── pages
-│   │   ├── hooks
-│   │   ├── layouts
-│   │   ├── services
-│   │   ├── context
-│   │   └── utils
-│   └── package.json
-│
-├── backend
-│   ├── src
-│   │   ├── config
-│   │   ├── controllers
-│   │   ├── middleware
-│   │   ├── models
-│   │   ├── routes
-│   │   ├── services
-│   │   └── utils
-│   └── package.json
-│
-├── README.md
-├── .gitignore
-└── .env
+├── app                  # Next.js App Router (pages & routes)
+├── components           # Reusable UI components
+├── lib                  # State management, data models, and utilities
+├── supabase             # Supabase schema and configuration
+├── public               # Static assets
+├── package.json         # Project dependencies
+├── next.config.mjs      # Next.js configuration
+├── tsconfig.json        # TypeScript configuration
+└── README.md
 ```
 
 ---
@@ -211,27 +178,19 @@ PsyMira
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/PsyMira.git
+git clone https://github.com/Ahnaf-hasan-mahmud/PsyMira.git
 cd PsyMira
 ```
 
 ---
 
-## Backend Setup
+## Setup & Run
 
 ```bash
-cd backend
+# Install dependencies
 npm install
-npm run dev
-```
 
----
-
-## Frontend Setup
-
-```bash
-cd frontend
-npm install
+# Run the development server
 npm run dev
 ```
 
@@ -239,14 +198,11 @@ npm run dev
 
 # 🔑 Environment Variables
 
-Create a `.env` file inside the backend directory.
+Create a `.env.local` file at the root of the project with your Supabase credentials.
 
 ```env
-PORT=5000
-
-MONGODB_URI=your_mongodb_connection_string
-
-JWT_SECRET=your_secret_key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 ---
