@@ -145,6 +145,28 @@ export default function StoryPage() {
                 </span>
               </Link>
             </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.32, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -7 }}
+            >
+              <Link href="/story/homecoming" className={styles.storyCard}>
+                <span className={`${styles.cardArt} ${styles.homecomingArt}`} aria-hidden="true">
+                  <span className={styles.sun} />
+                  <span className={styles.horizon} />
+                </span>
+                <span className={styles.cardBody}>
+                  <span className={styles.cardEyebrow}>Narrative reflection · 14 chapters</span>
+                  <strong className={styles.cardTitle}>The Long Way Home</strong>
+                  <span className={styles.cardText}>
+                    A story about returning, settling in, and finding yourself again.
+                  </span>
+                  <span className={styles.cardAction}>Begin journey <ArrowRight size={17} /></span>
+                </span>
+              </Link>
+            </motion.div>
           </div>
         </section>
       </main>

@@ -15,7 +15,7 @@ export type Activity = {
   minutes: number;
   mood: number;
   calm: number;
-  storyId?: "silent-lake" | "ordinary-monday";
+  storyId?: "silent-lake" | "ordinary-monday" | "homecoming";
   title?: string;
   emotion?: string;
   technique?: string;

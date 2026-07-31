@@ -126,6 +126,21 @@
 }
 .window::before { left: 50%; top: 0; width: 6px; height: 100%; }
 .window::after { left: 0; top: 48%; width: 100%; height: 6px; }
+
+.homecomingArt {
+  background: linear-gradient(165deg, #c9bfe0, #bfa9ec);
+}
+.homecomingArt .sun {
+  top: 40px;
+  left: 20%;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.75);
+}
+.homecomingArt .horizon {
+  background: rgba(90, 71, 144, 0.2);
+}
+
 .cardBody {
   display: flex;
   flex: 1;

@@ -10,22 +10,22 @@
    stops when the user leaves.
    ============================================================ */
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { SoundKey, Soundtrack } from "./relaxationData";
+import type { SoundId, Soundscape } from "./relaxationData";
 
 const DEFAULT_VOLUME = 0.7;
 
 export type RelaxationAudio = {
-  currentId: SoundKey | null;
+  currentId: SoundId | null;
   isPlaying: boolean;
   isLoading: boolean;
   currentTime: number;
   duration: number;
   isFading: boolean;
-  volumeOf: (id: SoundKey) => number;
-  toggle: (track: Soundtrack) => void;
+  volumeOf: (id: SoundId) => number;
+  toggle: (track: Soundscape) => void;
   stop: () => void;
   seek: (seconds: number) => void;
-  setVolume: (id: SoundKey, value: number) => void;
+  setVolume: (id: SoundId, value: number) => void;
   fadeOutAndStop: (ms?: number) => void;
 };
 
@@ -34,7 +34,7 @@ export function useRelaxationAudio(): RelaxationAudio {
   const fadeRef = useRef<number | null>(null);
   const volumesRef = useRef<Record<string, number>>({});
 
-  const [currentId, setCurrentId] = useState<SoundKey | null>(null);
+  const [currentId, setCurrentId] = useState<SoundId | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFading, setIsFading] = useState(false);
@@ -42,7 +42,7 @@ export function useRelaxationAudio(): RelaxationAudio {
   const [duration, setDuration] = useState(0);
 
   const volumeOf = useCallback(
-    (id: SoundKey) => volumesRef.current[id] ?? DEFAULT_VOLUME,
+    (id: SoundId) => volumesRef.current[id] ?? DEFAULT_VOLUME,
     []
   );
 
@@ -78,7 +78,7 @@ export function useRelaxationAudio(): RelaxationAudio {
   }, []);
 
   const playTrack = useCallback(
-    (track: Soundtrack) => {
+    (track: Soundscape) => {
       clearFade();
       const el = ensureAudio();
       const vol = volumeOf(track.id);
@@ -117,7 +117,7 @@ export function useRelaxationAudio(): RelaxationAudio {
   }, [clearFade]);
 
   const toggle = useCallback(
-    (track: Soundtrack) => {
+    (track: Soundscape) => {
       if (currentId === track.id && isPlaying) {
         pause();
       } else {
@@ -135,7 +135,7 @@ export function useRelaxationAudio(): RelaxationAudio {
   }, []);
 
   const setVolume = useCallback(
-    (id: SoundKey, value: number) => {
+    (id: SoundId, value: number) => {
       const v = Math.max(0, Math.min(1, value));
       volumesRef.current[id] = v;
       if (id === currentId && audioRef.current && !isFading) {
