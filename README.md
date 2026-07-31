@@ -90,6 +90,7 @@ Users read interactive stories and answer questions based on different situation
 - Scenario-based questions
 - Mental wellness insights
 - Progress tracking
+- Revisit past story results seamlessly
 
 ---
 

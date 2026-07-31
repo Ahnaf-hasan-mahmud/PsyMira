@@ -22,9 +22,10 @@ The project follows a standard Next.js App Router structure:
   - `/breathing`: Guided breathing exercises.
   - `/relaxation`: Relaxation music/audio player.
   - `/story`: Interactive story-based mental health assessments.
+  - `/sleep`: Standalone sleep tracking and analytics dashboard.
 - **`/components`**: Reusable React components grouped by feature (e.g., `charts`, `dashboard`, `illustrations`, `landing`, `relaxation`, `story`, `ui`).
 - **`/lib`**: Core business logic, data models, state management, and custom hooks.
-  - State stores (LocalStorage based): `activityStore.ts`, `diaryStore.ts`, `relaxationStore.ts`.
+  - State stores (LocalStorage based): `activityStore.ts`, `diaryStore.ts`, `relaxationStore.ts`, `sleepStore.ts`.
   - Content data: `assessmentData.ts`, `breathingData.ts`, `relaxationData.ts`, `storyData.ts`.
   - Database Client: `/lib/supabase/` for SSR and client Supabase instances.
 - **`/supabase`**: Contains Supabase configuration and database schemas.
