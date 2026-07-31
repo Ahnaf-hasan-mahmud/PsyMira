@@ -42,6 +42,23 @@ export function recordActivity(activity: Omit<Activity, "id" | "createdAt">) {
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
+export function saveStoryPicks(storyId: string, picks: any[]) {
+  if (typeof window === "undefined") return;
+  const key = `psymira.story.picks.${storyId}`;
+  window.localStorage.setItem(key, JSON.stringify(picks));
+}
+
+export function getStoryPicks(storyId: string): any[] | null {
+  if (typeof window === "undefined") return null;
+  const key = `psymira.story.picks.${storyId}`;
+  try {
+    const data = window.localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
+  } catch {
+    return null;
+  }
+}
+
 const DAY_MS = 86_400_000;
 const dayKey = (date: Date) => date.toISOString().slice(0, 10);
 const clamp = (value: number) => Math.max(0, Math.min(100, Math.round(value)));

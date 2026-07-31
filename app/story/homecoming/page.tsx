@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/ui/Logo";
@@ -10,6 +10,7 @@ import ParticleField from "@/components/illustrations/ParticleField";
 import { Close } from "@/components/ui/Icons";
 import { type AChoice } from "@/lib/assessmentData";
 import { HOMECOMING_ASSESSMENT } from "@/lib/homecomingData";
+import { saveStoryPicks, getStoryPicks } from "@/lib/activityStore";
 import styles from "../page.module.css";
 
 type Phase = "story" | "echo" | "summary";
@@ -25,6 +26,17 @@ export default function HomecomingPage() {
   const [phase, setPhase] = useState<Phase>("story");
   const [echo, setEcho] = useState("");
 
+  useEffect(() => {
+    const search = window.location.search;
+    if (search.includes("view=result")) {
+      const savedPicks = getStoryPicks("homecoming");
+      if (savedPicks) {
+        setPicks(savedPicks as AChoice[]);
+        setPhase("summary");
+      }
+    }
+  }, []);
+
   const current = sceneMap[currentId];
   const busy = useRef(false);
 
@@ -39,6 +51,8 @@ export default function HomecomingPage() {
 
       window.setTimeout(() => {
         if (choice.next === "END") {
+          const newPicks = [...picks, choice];
+          saveStoryPicks("homecoming", newPicks);
           setPhase("summary");
         } else {
           setCurrentId(choice.next);
@@ -47,7 +61,7 @@ export default function HomecomingPage() {
         busy.current = false;
       }, 1900);
     },
-    []
+    [picks]
   );
 
   const restart = useCallback(() => {

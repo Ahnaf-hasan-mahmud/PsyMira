@@ -175,6 +175,41 @@
   font-weight: 700;
 }
 
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.primaryAction, .ghostAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  transition: all 0.2s ease;
+}
+
+.primaryAction {
+  background: var(--accent);
+  color: #fff;
+}
+.primaryAction:hover {
+  background: var(--accent-deep);
+}
+
+.ghostAction {
+  background: rgba(255,255,255,0.5);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.ghostAction:hover {
+  background: #fff;
+}
+
 /* ---- top bar ---- */
 .bar {
   position: relative;

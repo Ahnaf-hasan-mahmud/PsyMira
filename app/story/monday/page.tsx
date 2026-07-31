@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/ui/Logo";
@@ -9,6 +9,7 @@ import AssessmentReport from "@/components/story/AssessmentReport";
 import ParticleField from "@/components/illustrations/ParticleField";
 import { Close } from "@/components/ui/Icons";
 import { ASSESSMENT, type AChoice } from "@/lib/assessmentData";
+import { saveStoryPicks, getStoryPicks } from "@/lib/activityStore";
 import styles from "../page.module.css";
 
 type Phase = "story" | "echo" | "summary";
@@ -24,6 +25,17 @@ export default function AssessmentPage() {
   const [phase, setPhase] = useState<Phase>("story");
   const [echo, setEcho] = useState("");
 
+  useEffect(() => {
+    const search = window.location.search;
+    if (search.includes("view=result")) {
+      const savedPicks = getStoryPicks("ordinary-monday");
+      if (savedPicks) {
+        setPicks(savedPicks as AChoice[]);
+        setPhase("summary");
+      }
+    }
+  }, []);
+
   const current = sceneMap[currentId];
   const busy = useRef(false);
 
@@ -38,6 +50,8 @@ export default function AssessmentPage() {
 
       window.setTimeout(() => {
         if (choice.next === "END") {
+          const newPicks = [...picks, choice];
+          saveStoryPicks("ordinary-monday", newPicks);
           setPhase("summary");
         } else {
           setCurrentId(choice.next);
@@ -46,7 +60,7 @@ export default function AssessmentPage() {
         busy.current = false;
       }, 1900);
     },
-    []
+    [picks]
   );
 
   const restart = useCallback(() => {

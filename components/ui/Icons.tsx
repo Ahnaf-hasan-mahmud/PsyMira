@@ -263,3 +263,9 @@ export const Leaf = ({ size = 18, className }: IconProps) => (
     <path d="M4 20c3-6 7-9 12-11" />
   </svg>
 );
+
+export const Moon = ({ size = 18, className }: IconProps) => (
+  <svg {...base(size)} className={className} aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </svg>
+);

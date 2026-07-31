@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/ui/Logo";
 import SceneArt from "@/components/story/SceneArt";
 import StoryReflection from "@/components/story/StoryReflection";
 import ParticleField from "@/components/illustrations/ParticleField";
-import { ArrowRight, Close } from "@/components/ui/Icons";
+import { ArrowRight, Close, Eye, Play } from "@/components/ui/Icons";
 import { STORY, type Choice } from "@/lib/storyData";
+import { useActivityDashboard, saveStoryPicks, getStoryPicks } from "@/lib/activityStore";
 import styles from "./page.module.css";
 
 type Phase = "story" | "echo" | "summary";
@@ -19,9 +21,26 @@ export default function StoryPage() {
   const [picks, setPicks] = useState<Choice[]>([]);
   const [phase, setPhase] = useState<Phase>("story");
   const [echo, setEcho] = useState("");
+  const router = useRouter();
 
   const total = STORY.scenes.length;
   const current = STORY.scenes[index];
+
+  const { activities } = useActivityDashboard();
+  const completedStories = new Set(activities.filter(a => a.kind === "story").map(a => a.storyId));
+
+  // Handle URL params for jumping straight to result
+  useEffect(() => {
+    const search = window.location.search;
+    if (search.includes("view=result")) {
+      const savedPicks = getStoryPicks("silent-lake");
+      if (savedPicks) {
+        setPicks(savedPicks as Choice[]);
+        setPhase("summary");
+        setView("story");
+      }
+    }
+  }, []);
 
   // Guards against advancing twice if interactions outpace re-renders:
   // the decision to advance always reads the *live* index, never a stale closure.
@@ -42,6 +61,8 @@ export default function StoryPage() {
       window.setTimeout(() => {
         const atLast = indexRef.current + 1 >= total;
         if (atLast) {
+          const newPicks = [...picks, choice];
+          saveStoryPicks("silent-lake", newPicks);
           setPhase("summary");
         } else {
           setIndex((i) => i + 1);
@@ -50,7 +71,7 @@ export default function StoryPage() {
         busyRef.current = false;
       }, 1900);
     },
-    [total]
+    [total, picks]
   );
 
   const restart = useCallback(() => {
@@ -100,37 +121,68 @@ export default function StoryPage() {
           </motion.div>
 
           <div className={styles.storyGrid}>
-            <motion.button
-              type="button"
+            <motion.div
               className={styles.storyCard}
-              onClick={openStory}
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -7 }}
-              whileTap={{ scale: 0.99 }}
             >
-              <span className={`${styles.cardArt} ${styles.lakeArt}`} aria-hidden="true">
-                <span className={styles.moon} />
-                <span className={styles.horizon} />
-              </span>
-              <span className={styles.cardBody}>
-                <span className={styles.cardEyebrow}>Reflective story · 5 chapters</span>
-                <strong className={styles.cardTitle}>{STORY.title}</strong>
-                <span className={styles.cardText}>
-                  A gentle journey through stillness, courage, connection, and wonder.
+              <div style={{ cursor: "pointer", display: "contents" }} onClick={openStory}>
+                <span className={`${styles.cardArt} ${styles.lakeArt}`} aria-hidden="true">
+                  <span className={styles.moon} />
+                  <span className={styles.horizon} />
                 </span>
-                <span className={styles.cardAction}>Begin story <ArrowRight size={17} /></span>
-              </span>
-            </motion.button>
+                <span className={styles.cardBody}>
+                  <span className={styles.cardEyebrow}>Reflective story · 5 chapters</span>
+                  <strong className={styles.cardTitle}>{STORY.title}</strong>
+                  <span className={styles.cardText}>
+                    A gentle journey through stillness, courage, connection, and wonder.
+                  </span>
+                </span>
+              </div>
+              
+              <div style={{ padding: "0 32px 32px" }}>
+                {completedStories.has("silent-lake") ? (
+                  <div className={styles.cardActions} onClick={e => e.stopPropagation()}>
+                    <button 
+                      type="button" 
+                      className={styles.primaryAction}
+                      onClick={() => {
+                        const saved = getStoryPicks("silent-lake");
+                        if (saved) {
+                          setPicks(saved as Choice[]);
+                          setPhase("summary");
+                          setView("story");
+                        } else {
+                          alert("You completed this story before detailed results were saved. Please restart the journey to generate a new report.");
+                        }
+                      }}
+                    >
+                      <Eye size={16} /> View Insights
+                    </button>
+                    <button type="button" onClick={openStory} className={styles.ghostAction}>
+                      <Play size={16} /> Restart Journey
+                    </button>
+                  </div>
+                ) : (
+                  <span className={styles.cardActions}>
+                    <button type="button" onClick={openStory} className={styles.primaryAction}>
+                      Begin story <ArrowRight size={17} />
+                    </button>
+                  </span>
+                )}
+              </div>
+            </motion.div>
 
             <motion.div
+              className={styles.storyCard}
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.22, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -7 }}
             >
-              <Link href="/story/monday" className={styles.storyCard}>
+              <div style={{ cursor: "pointer", display: "contents" }} onClick={() => router.push("/story/monday")}>
                 <span className={`${styles.cardArt} ${styles.mondayArt}`} aria-hidden="true">
                   <span className={styles.sun} />
                   <span className={styles.window} />
@@ -139,20 +191,49 @@ export default function StoryPage() {
                   <span className={styles.cardEyebrow}>Emotional check-in · 13 moments</span>
                   <strong className={styles.cardTitle}>One Ordinary Monday</strong>
                   <span className={styles.cardText}>
-                    Move through an ordinary day and gently notice what your choices reveal.
+                    It was supposed to be a normal start to the week. Explore how your inner world reacts to everyday friction.
                   </span>
-                  <span className={styles.cardAction}>Begin check-in <ArrowRight size={17} /></span>
                 </span>
-              </Link>
+              </div>
+              
+              <div style={{ padding: "0 32px 32px" }}>
+                {completedStories.has("ordinary-monday") ? (
+                  <div className={styles.cardActions} onClick={e => e.stopPropagation()}>
+                    <button 
+                      type="button"
+                      className={styles.primaryAction}
+                      onClick={() => {
+                        if (!getStoryPicks("ordinary-monday")) {
+                          alert("You completed this story before detailed results were saved. Please restart the journey to generate a new report.");
+                        } else {
+                          router.push("/story/monday?view=result");
+                        }
+                      }}
+                    >
+                      <Eye size={16} /> View Insights
+                    </button>
+                    <Link href="/story/monday" className={styles.ghostAction}>
+                      <Play size={16} /> Restart Journey
+                    </Link>
+                  </div>
+                ) : (
+                  <span className={styles.cardActions}>
+                    <Link href="/story/monday" className={styles.primaryAction}>
+                      Begin story <ArrowRight size={17} />
+                    </Link>
+                  </span>
+                )}
+              </div>
             </motion.div>
 
             <motion.div
+              className={styles.storyCard}
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.32, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -7 }}
             >
-              <Link href="/story/homecoming" className={styles.storyCard}>
+              <div style={{ cursor: "pointer", display: "contents" }} onClick={() => router.push("/story/homecoming")}>
                 <span className={`${styles.cardArt} ${styles.homecomingArt}`} aria-hidden="true">
                   <span className={styles.sun} />
                   <span className={styles.horizon} />
@@ -161,11 +242,39 @@ export default function StoryPage() {
                   <span className={styles.cardEyebrow}>Narrative reflection · 14 chapters</span>
                   <strong className={styles.cardTitle}>The Long Way Home</strong>
                   <span className={styles.cardText}>
-                    A story about returning, settling in, and finding yourself again.
+                    A nostalgic road trip back to your childhood home, filled with old memories and unanswered questions.
                   </span>
-                  <span className={styles.cardAction}>Begin journey <ArrowRight size={17} /></span>
                 </span>
-              </Link>
+              </div>
+              
+              <div style={{ padding: "0 32px 32px" }}>
+                {completedStories.has("homecoming") ? (
+                  <div className={styles.cardActions} onClick={e => e.stopPropagation()}>
+                    <button 
+                      type="button"
+                      className={styles.primaryAction}
+                      onClick={() => {
+                        if (!getStoryPicks("homecoming")) {
+                          alert("You completed this story before detailed results were saved. Please restart the journey to generate a new report.");
+                        } else {
+                          router.push("/story/homecoming?view=result");
+                        }
+                      }}
+                    >
+                      <Eye size={16} /> View Insights
+                    </button>
+                    <Link href="/story/homecoming" className={styles.ghostAction}>
+                      <Play size={16} /> Restart Journey
+                    </Link>
+                  </div>
+                ) : (
+                  <span className={styles.cardActions}>
+                    <Link href="/story/homecoming" className={styles.primaryAction}>
+                      Begin story <ArrowRight size={17} />
+                    </Link>
+                  </span>
+                )}
+              </div>
             </motion.div>
           </div>
         </section>

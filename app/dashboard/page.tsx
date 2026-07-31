@@ -298,8 +298,8 @@ export default function DashboardPage() {
                     <div className={styles.storyActions}>
                       {done ? (
                         <>
-                          <Button href={s.href} variant="secondary" size="md">
-                            <Eye size={15} /> View Result
+                          <Button href={`${s.href}?view=result`} variant="secondary" size="md">
+                            <Eye size={15} /> View Insights
                           </Button>
                           <Link href={s.href} className={styles.ghostAction}>
                             Restart
