@@ -4,7 +4,7 @@
 ![Version](https://img.shields.io/badge/version-1.0-orange)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-PsyMira is a comprehensive mental wellness platform that helps users develop healthier habits, monitor their emotional well-being, and practice self-care through interactive and easy-to-use tools. It brings together mood tracking, sleep monitoring, breathing exercises, meditation, relaxing music, journaling, and mental health assessments into a single platform.
+PsyMira is a comprehensive mental wellness web application intended to help users develop healthy habits, monitor their mood, and practice self-care through interactive tools like breathing exercises, relaxation audio, journaling, and interactive story-based assessments.
 
 Our goal is to make mental wellness more accessible by encouraging users to build positive daily routines, reflect on their emotions, and maintain a healthier lifestyle.
 
@@ -12,290 +12,136 @@ Our goal is to make mental wellness more accessible by encouraging users to buil
 
 ---
 
-# ✨ Features
+## ✨ Features
 
-## 😊 Mood Tracking
-
+### 😊 Mood Tracking
 Track your daily emotions and understand how your mood changes over time.
+- Daily mood logging, history, and calendar
+- Weekly and monthly trends and statistics
 
-**Features**
-- Daily mood logging
-- Mood history
-- Mood calendar
-- Mood statistics
-- Weekly and monthly trends
-
----
-
-## 😴 Sleep Tracking
-
+### 😴 Sleep Tracking
 Monitor your sleeping habits to build a healthier sleep routine.
+- Sleep duration, quality, notes, and history
 
-**Features**
-- Sleep duration
-- Sleep quality
-- Sleep notes
-- Sleep history
-- Sleep statistics
-
----
-
-## 🌬️ Breathing Exercises
-
+### 🌬️ Breathing Exercises
 Reduce stress with guided breathing exercises.
+- Box, 4-7-8, Deep, and Relaxation Breathing with animated guides
 
-**Includes**
-- Box Breathing
-- 4-7-8 Breathing
-- Deep Breathing
-- Relaxation Breathing
-- Animated breathing guide
+### 🧘 Meditation & 🎵 Relaxing Music
+Practice mindfulness and listen to calming audio.
+- Guided meditation, focus, sleep, and relaxation sessions
+- Ambient sounds: Rain, Ocean, Forest, Fireplace, White/Brown Noise
 
----
+### 📖 Story-Based Mental Health Assessment
+Read interactive stories and answer scenario-based questions. Responses map to emotional traits (e.g., stillness, courage), provide insights into emotional well-being, and encourage self-reflection.
 
-## 🧘 Meditation
-
-Practice mindfulness with guided meditation sessions.
-
-**Includes**
-- Guided Meditation
-- Mindfulness
-- Focus Meditation
-- Sleep Meditation
-- Relaxation Sessions
-
----
-
-## 🎵 Relaxing Music
-
-Listen to calming audio while studying, working, or relaxing.
-
-**Categories**
-- Rain
-- Ocean
-- Forest
-- Fireplace
-- White Noise
-- Brown Noise
-- Ambient Sounds
-
----
-
-## 📖 Story-Based Mental Health Assessment
-
-Users read interactive stories and answer questions based on different situations. Their responses help provide insights into emotional well-being and encourage self-reflection.
-
-**Features**
-- Interactive stories
-- Scenario-based questions
-- Mental wellness insights
-- Progress tracking
-- Revisit past story results seamlessly
-
----
-
-## 📝 Journal
-
+### 📝 Journal
 Write about your thoughts and feelings every day.
+- Daily journal entries, reflection notes, and mood-linked journals
 
-**Features**
-- Daily journal entries
-- Reflection notes
-- Mood-linked journals
-- Personal diary
-
----
-
-## 📊 Dashboard & Analytics
-
+### 📊 Dashboard & Analytics
 Visualize your wellness journey with simple and informative charts.
+- Mood/sleep trends, daily activity overview, wellness statistics, habit consistency
 
-**Includes**
-- Mood trends
-- Sleep trends
-- Daily activity overview
-- Wellness statistics
-- Habit consistency
+### 🏆 Habit & Streak System
+Stay motivated by building healthy habits. Completing activities (like stories or breathing) earns XP and builds daily streaks.
 
 ---
 
-## 🏆 Habit & Streak System
+## 🚀 Tech Stack
 
-Stay motivated by building healthy habits.
-
-**Features**
-- Daily streaks
-- Achievement badges
-- Wellness points
-- Daily challenges
-- Habit tracking
-
----
-
-## 🔔 Reminders
-
-Never miss your wellness routine.
-
-**Reminders**
-- Mood logging
-- Meditation
-- Sleep
-- Breathing exercises
-- Journaling
-
----
-
-# 🚀 Tech Stack
-
-- **Framework:** Next.js 15 (App Router)
-- **Frontend:** React 18, TypeScript, Tailwind CSS, Framer Motion
+- **Framework:** Next.js 15 (App Router), React 18, TypeScript
+- **Styling:** Tailwind CSS, Framer Motion (animations)
 - **Data Visualization:** Recharts
-- **Backend & Database:** Supabase (PostgreSQL)
-- **Authentication:** Supabase Auth
-- **State Management:** React Context / Custom Hooks (with LocalStorage)
+- **Backend/Database/Auth:** Supabase (PostgreSQL, Supabase Auth)
+- **State Management:** React Context / Custom Hooks utilizing `localStorage` for offline-first data.
 
 ---
 
-# 📁 Project Structure
+## 🏗️ Architecture & Implementation Details
 
-```
+1. **Authentication & User Profiles:** Uses `@supabase/ssr` and Supabase Auth. A Postgres trigger (`handle_new_user`) automatically creates a profile row to store user XP and streaks on signup.
+2. **Dashboard & Analytics:** Analytics (mood trends, streaks, XP) are calculated on the client side using data stored in `localStorage` (`psymira.activity.v2`) for privacy and speed.
+3. **Story-Based Assessment:** Choices map to emotional traits. Results are saved locally and synced to the `reflections` table in Supabase.
+4. **Relaxation & Breathing:** State and audio logic are managed via local stores and hooks (e.g., `useRelaxationPlayer.ts`).
+
+---
+
+## 📁 Project Structure
+
+```text
 PsyMira
 │
 ├── app                  # Next.js App Router (pages & routes)
-├── components           # Reusable UI components
-├── lib                  # State management, data models, and utilities
-├── supabase             # Supabase schema and configuration
+│   ├── /auth, /dashboard, /breathing, /relaxation, /story, /sleep
+├── components           # Reusable React components by feature
+├── lib                  # Core business logic, data models, state management
+│   └── /supabase        # Supabase clients for SSR & client
+├── supabase             # Supabase schema, triggers, and RLS policies
 ├── public               # Static assets
-├── package.json         # Project dependencies
-├── next.config.mjs      # Next.js configuration
-├── tsconfig.json        # TypeScript configuration
-└── README.md
+└── package.json         # Project dependencies
 ```
 
 ---
 
-# ⚙️ Installation
+## ⚙️ Installation & Setup
 
-## Clone the Repository
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Ahnaf-hasan-mahmud/PsyMira.git
+   cd PsyMira
+   ```
 
-```bash
-git clone https://github.com/Ahnaf-hasan-mahmud/PsyMira.git
-cd PsyMira
-```
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
----
+3. **Environment Variables**
+   Create a `.env.local` file at the root of the project with your Supabase credentials:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
-## Setup & Run
-
-```bash
-# Install dependencies
-npm install
-
-# Run the development server
-npm run dev
-```
-
----
-
-# 🔑 Environment Variables
-
-Create a `.env.local` file at the root of the project with your Supabase credentials.
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
+4. **Run the Development Server**
+   ```bash
+   npm run dev
+   ```
 
 ---
 
-# 📸 Screenshots
+## 🎯 Roadmap
 
-> Screenshots will be added soon.
-
----
-
-# 🎯 Roadmap
-
-## Version 1.0
-
-- [x] User Authentication
-- [x] User Profile
-- [x] Mood Tracker
-- [x] Sleep Tracker
-- [x] Journal
-- [x] Breathing Exercises
+- **Version 1.0:** User Auth, User Profile, Mood Tracker, Sleep Tracker, Journal, Breathing Exercises
+- **Version 1.1:** Meditation Module, Relaxing Music, Interactive Story Assessment, Dashboard Improvements
+- **Version 1.2:** Habit Tracker, Daily Challenges, Achievement System, Advanced Analytics
+- **Future Plans:** Community Support, Wellness Resources, Mobile Application, Multi-language Support, Personalized Recommendations
 
 ---
 
-## Version 1.1
-
-- [ ] Meditation Module
-- [ ] Relaxing Music
-- [ ] Interactive Story Assessment
-- [ ] Dashboard Improvements
-
----
-
-## Version 1.2
-
-- [ ] Habit Tracker
-- [ ] Daily Challenges
-- [ ] Achievement System
-- [ ] Advanced Analytics
-
----
-
-## Future Plans
-
-- [ ] Community Support
-- [ ] Wellness Resources
-- [ ] Mobile Application
-- [ ] Multi-language Support
-- [ ] Personalized Wellness Recommendations
-
----
-
-# 🤝 Contributing
+## 🤝 Contributing
 
 Contributions are welcome!
-
 1. Fork the repository.
-2. Create a feature branch.
-
-```bash
-git checkout -b feature/new-feature
-```
-
-3. Commit your changes.
-
-```bash
-git commit -m "Add new feature"
-```
-
-4. Push your branch.
-
-```bash
-git push origin feature/new-feature
-```
-
+2. Create a feature branch: `git checkout -b feature/new-feature`
+3. Commit your changes: `git commit -m "Add new feature"`
+4. Push your branch: `git push origin feature/new-feature`
 5. Open a Pull Request.
 
 ---
 
-# 📄 License
+## 📄 License
 
 This project is licensed under the **MIT License**.
 
 ---
 
-# 👨‍💻 Authors
+## 👨‍💻 Authors
 
-Developed with ❤️ by the **PsyMira Team**.
+Developed with ❤️ by the **PsyMira Team**:
+- **Dibya Das Gupta**
+- **Ahnaf Hasan Mahmud**
+- **Iftap Salim**
 
----
-
-# 🌟 Support
-
-If you like this project, please consider giving it a **⭐ Star** on GitHub.
-
-Your support motivates us to continue improving PsyMira and making mental wellness more accessible for everyone.
+If you like this project, please consider giving it a **⭐ Star** on GitHub to support our mission of making mental wellness accessible for everyone.
