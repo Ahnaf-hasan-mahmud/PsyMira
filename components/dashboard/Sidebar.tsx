@@ -17,6 +17,7 @@ import {
   Menu,
   Close,
   Moon,
+  Gamepad,
 } from "@/components/ui/Icons";
 import styles from "./Sidebar.module.css";
 
@@ -25,6 +26,7 @@ const NAV = [
   { label: "Stories", icon: Book, href: "/story" },
   { label: "Breathing", icon: Wind, href: "/breathing" },
   { label: "Relaxation", icon: Waves, href: "/relaxation" },
+  { label: "Games", icon: Gamepad, href: "/games" },
   { label: "Sleep", icon: Moon, href: "/sleep" },
   { label: "Journal", icon: Feather, href: "/dashboard/journal" },
   { label: "Insights", icon: Compass, href: "/dashboard/insights" },

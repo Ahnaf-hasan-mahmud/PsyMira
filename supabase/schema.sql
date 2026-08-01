@@ -9,6 +9,7 @@
 create table if not exists public.profiles (
   id          uuid primary key references auth.users (id) on delete cascade,
   name        text,
+  date_of_birth date,
   xp          integer not null default 0,
   streak      integer not null default 0,
   created_at  timestamptz not null default now()
@@ -35,8 +36,12 @@ language plpgsql
 security definer set search_path = public
 as $$
 begin
-  insert into public.profiles (id, name)
-  values (new.id, new.raw_user_meta_data ->> 'name');
+  insert into public.profiles (id, name, date_of_birth)
+  values (
+    new.id, 
+    new.raw_user_meta_data ->> 'name',
+    (new.raw_user_meta_data ->> 'dob')::date
+  );
   return new;
 end;
 $$;

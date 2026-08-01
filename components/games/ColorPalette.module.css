@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+.swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+}
+.swatch:hover {
+  transform: scale(1.1);
+}
+.swatchActive {
+  box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--accent);
+}

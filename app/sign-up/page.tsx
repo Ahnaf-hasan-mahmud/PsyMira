@@ -13,11 +13,12 @@ import { fadeUp, stagger } from "@/lib/motion";
 import form from "@/components/auth/AuthForm.module.css";
 import styles from "./page.module.css";
 
-type Errors = Partial<Record<"name" | "email" | "password" | "confirm", string>>;
+type Errors = Partial<Record<"name" | "email" | "password" | "confirm" | "dob", string>>;
 
 export default function SignUpPage() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [dob, setDob] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -28,6 +29,7 @@ export default function SignUpPage() {
   function validate(): boolean {
     const e: Errors = {};
     if (name.trim().length < 2) e.name = "Please tell us your name.";
+    if (!dob) e.dob = "Please tell us your date of birth.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       e.email = "Enter a valid email address.";
     if (password.length < 8) e.password = "Use at least 8 characters.";
@@ -55,7 +57,7 @@ export default function SignUpPage() {
       email,
       password,
       options: {
-        data: { name },
+        data: { name, dob },
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
@@ -121,6 +123,14 @@ export default function SignUpPage() {
               onChange={setName}
               autoComplete="name"
               error={errors.name}
+              required
+            />
+            <TextField
+              label="Date of Birth"
+              type="date"
+              value={dob}
+              onChange={setDob}
+              error={errors.dob}
               required
             />
             <TextField

@@ -6,7 +6,7 @@ import { reflectionMix } from "./sampleData";
 const STORAGE_KEY = "psymira.activity.v2";
 const CHANGE_EVENT = "psymira:activity-change";
 
-export type ActivityKind = "story" | "breathing" | "mood";
+export type ActivityKind = "story" | "breathing" | "mood" | "game";
 
 export type Activity = {
   id: string;
@@ -19,6 +19,7 @@ export type Activity = {
   title?: string;
   emotion?: string;
   technique?: string;
+  gameId?: string;
 };
 
 function readActivities(): Activity[] {
@@ -87,7 +88,10 @@ export function useActivityDashboard() {
     // Dashboard progress is earned only through a completed story or a full
     // breathing round. Mood check-ins remain saved, but do not inflate it.
     const completed = activities.filter(
-      (activity) => activity.kind === "story" || activity.kind === "breathing"
+      (activity) =>
+        activity.kind === "story" ||
+        activity.kind === "breathing" ||
+        activity.kind === "game"
     );
     const days = Array.from({ length: 7 }, (_, index) => {
       const date = new Date(now.getTime() - (6 - index) * DAY_MS);
@@ -142,7 +146,8 @@ export function useActivityDashboard() {
     const storyCompletions = completed.filter((a) => a.kind === "story");
     const completedStories = new Set(storyCompletions.map((a) => a.storyId));
     const breathingRounds = completed.filter((a) => a.kind === "breathing").length;
-    const xp = storyCompletions.length * 120 + breathingRounds * 20;
+    const gameRounds = completed.filter((a) => a.kind === "game").length;
+    const xp = storyCompletions.length * 120 + breathingRounds * 20 + gameRounds * 15;
 
     const uniqueDays = [...new Set(completed.map((a) => dayKey(new Date(a.createdAt))))].sort().reverse();
     let streak = 0;
