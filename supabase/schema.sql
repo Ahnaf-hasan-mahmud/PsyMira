@@ -74,3 +74,32 @@ create policy "Users can insert their own reflections"
 
 create index if not exists reflections_user_created_idx
   on public.reflections (user_id, created_at desc);
+
+-- ---- Activities (History of all user events) ---------------
+create table if not exists public.activities (
+  id            uuid primary key default gen_random_uuid(),
+  user_id       uuid not null references auth.users (id) on delete cascade,
+  kind          text not null, -- 'story', 'breathing', 'mood', 'game'
+  minutes       integer not null default 0,
+  mood          integer not null default 0,
+  calm          integer not null default 0,
+  story_id      text,
+  title         text,
+  emotion       text,
+  technique     text,
+  game_id       text,
+  created_at    timestamptz not null default now()
+);
+
+alter table public.activities enable row level security;
+
+create policy "Activities are viewable by their owner"
+  on public.activities for select
+  using (auth.uid() = user_id);
+
+create policy "Users can insert their own activities"
+  on public.activities for insert
+  with check (auth.uid() = user_id);
+
+create index if not exists activities_user_created_idx
+  on public.activities (user_id, created_at desc);

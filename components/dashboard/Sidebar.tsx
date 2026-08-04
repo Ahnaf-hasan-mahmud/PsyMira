@@ -51,7 +51,7 @@ export default function Sidebar() {
   const nav = (
     <nav className={styles.nav} aria-label="Dashboard">
       <div className={styles.logoWrap}>
-        <Logo />
+        <Logo href="/dashboard" />
       </div>
 
       <ul className={styles.list}>

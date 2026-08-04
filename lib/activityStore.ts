@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { reflectionMix } from "./sampleData";
+import { createClient } from "./supabase/client";
 
 const STORAGE_KEY = "psymira.activity.v2";
 const CHANGE_EVENT = "psymira:activity-change";
@@ -15,15 +16,49 @@ export type Activity = {
   minutes: number;
   mood: number;
   calm: number;
-  storyId?: "silent-lake" | "ordinary-monday" | "homecoming";
+  storyId?: "silent-lake" | "ordinary-monday" | "homecoming" | string;
   title?: string;
   emotion?: string;
   technique?: string;
   gameId?: string;
 };
 
-function readActivities(): Activity[] {
+export async function fetchActivities(): Promise<Activity[]> {
   if (typeof window === "undefined") return [];
+  
+  // 1. Try Supabase Sync
+  const supabase = createClient();
+  if (supabase) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      const { data, error } = await supabase
+        .from('activities')
+        .select('*')
+        .order('created_at', { ascending: true });
+        
+      if (!error && data) {
+        // Map from DB snake_case to client camelCase
+        const mapped = data.map(row => ({
+          id: row.id,
+          kind: row.kind,
+          createdAt: row.created_at,
+          minutes: row.minutes,
+          mood: row.mood,
+          calm: row.calm,
+          storyId: row.story_id,
+          title: row.title,
+          emotion: row.emotion,
+          technique: row.technique,
+          gameId: row.game_id,
+        }));
+        // Update local cache so offline works instantly next time
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(mapped));
+        return mapped as Activity[];
+      }
+    }
+  }
+
+  // 2. Fallback to Local Storage
   try {
     const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "[]");
     return Array.isArray(parsed) ? parsed : [];
@@ -32,15 +67,43 @@ function readActivities(): Activity[] {
   }
 }
 
-export function recordActivity(activity: Omit<Activity, "id" | "createdAt">) {
+export async function recordActivity(activity: Omit<Activity, "id" | "createdAt">) {
   if (typeof window === "undefined") return;
+  
   const next: Activity = {
     ...activity,
     id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
     createdAt: new Date().toISOString(),
   };
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...readActivities(), next]));
-  window.dispatchEvent(new Event(CHANGE_EVENT));
+
+  // Optimistic UI Update (Local Storage)
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "[]");
+    const current = Array.isArray(parsed) ? parsed : [];
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...current, next]));
+    window.dispatchEvent(new Event(CHANGE_EVENT));
+  } catch (e) {}
+
+  // Sync to Cloud
+  const supabase = createClient();
+  if (supabase) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      await supabase.from('activities').insert({
+        user_id: session.user.id,
+        kind: activity.kind,
+        minutes: activity.minutes,
+        mood: activity.mood,
+        calm: activity.calm,
+        story_id: activity.storyId,
+        title: activity.title,
+        emotion: activity.emotion,
+        technique: activity.technique,
+        game_id: activity.gameId,
+        created_at: next.createdAt,
+      });
+    }
+  }
 }
 
 export function saveStoryPicks(storyId: string, picks: any[]) {
@@ -68,8 +131,19 @@ export function useActivityDashboard() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [ready, setReady] = useState(false);
 
-  const refresh = useCallback(() => {
-    setActivities(readActivities());
+  const refresh = useCallback(async () => {
+    // 1. Optimistic fast-load from local storage
+    try {
+      const localParsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "[]");
+      if (Array.isArray(localParsed) && localParsed.length > 0) {
+        setActivities(localParsed);
+        setReady(true);
+      }
+    } catch (e) {}
+
+    // 2. Fetch ground truth from Cloud
+    const cloudData = await fetchActivities();
+    setActivities(cloudData);
     setReady(true);
   }, []);
 
