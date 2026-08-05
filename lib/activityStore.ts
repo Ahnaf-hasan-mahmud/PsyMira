@@ -182,7 +182,7 @@ export function useActivityDashboard() {
     });
 
     const moodData = days.map((day, index) => {
-      const daily = completed.filter((a) => dayKey(new Date(a.createdAt)) === day.key);
+      const daily = activities.filter((a) => dayKey(new Date(a.createdAt)) === day.key && (a.kind === "mood" || a.mood > 0));
       if (!daily.length) return { day: day.day, mood: 0, calm: 0 };
       return {
         day: day.day,

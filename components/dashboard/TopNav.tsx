@@ -11,20 +11,39 @@ import styles from "./TopNav.module.css";
 /** Dashboard top bar: greeting, search, notifications, avatar. */
 export default function TopNav({ name = "Aria" }: { name?: string }) {
   const [displayName, setDisplayName] = useState(name);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  // Pull the signed-in user's name (falls back to the demo default).
   useEffect(() => {
     const supabase = createClient();
     if (!supabase) return;
-    supabase.auth.getUser().then(({ data }) => {
-      const u = data.user;
-      if (!u) return;
-      const n =
-        (u.user_metadata?.name as string) ||
-        u.email?.split("@")[0] ||
-        name;
-      setDisplayName(n.charAt(0).toUpperCase() + n.slice(1));
-    });
+    
+    async function fetchName() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('name, avatar_url')
+        .eq('id', user.id)
+        .single();
+        
+      if (profile) {
+        if (profile.name) {
+          setDisplayName(profile.name.charAt(0).toUpperCase() + profile.name.slice(1));
+        } else {
+          const fallback = (user.user_metadata?.name as string) || user.email?.split("@")[0] || name;
+          setDisplayName(fallback.charAt(0).toUpperCase() + fallback.slice(1));
+        }
+        if (profile.avatar_url) {
+          setAvatarUrl(profile.avatar_url);
+        }
+      } else {
+        const fallback = (user.user_metadata?.name as string) || user.email?.split("@")[0] || name;
+        setDisplayName(fallback.charAt(0).toUpperCase() + fallback.slice(1));
+      }
+    }
+    
+    fetchName();
   }, [name]);
 
   const hour = new Date().getHours();
@@ -54,11 +73,20 @@ export default function TopNav({ name = "Aria" }: { name?: string }) {
         <NotificationDropdown />
 
         <Link href="/dashboard/profile" aria-label="Your profile">
-          <button className={styles.avatar} tabIndex={-1}>
-            {initial}
+          <button 
+            className={styles.avatar} 
+            tabIndex={-1}
+            style={avatarUrl ? { padding: 0, overflow: 'hidden', background: 'transparent' } : {}}
+          >
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : (
+              initial
+            )}
           </button>
         </Link>
       </div>
     </motion.header>
   );
 }
+
