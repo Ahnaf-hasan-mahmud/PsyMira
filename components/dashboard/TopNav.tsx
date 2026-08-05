@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 import { Search, Bell } from "@/components/ui/Icons";
 import styles from "./TopNav.module.css";
 
@@ -59,9 +60,11 @@ export default function TopNav({ name = "Aria" }: { name?: string }) {
           <span className={styles.badge} />
         </button>
 
-        <button className={styles.avatar} aria-label="Your profile">
-          {initial}
-        </button>
+        <Link href="/dashboard/profile" aria-label="Your profile">
+          <button className={styles.avatar} tabIndex={-1}>
+            {initial}
+          </button>
+        </Link>
       </div>
     </motion.header>
   );
