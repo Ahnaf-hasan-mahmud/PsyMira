@@ -9,6 +9,7 @@ export type DiaryEntry = {
   date: string;
   dayNotes: string;
   goals: string;
+  goalCompleted?: boolean;
   updatedAt: string;
 };
 

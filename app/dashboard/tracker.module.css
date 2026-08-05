@@ -21,6 +21,7 @@
 .entryButton span { display: block; font-weight: 700; }
 .entryButton small { display: block; overflow: hidden; margin-top: 3px; color: var(--text-tertiary); white-space: nowrap; text-overflow: ellipsis; }
 .entryActive { border-color: var(--accent-2); background: #f5f1fb; }
+.entryCompleted { border-color: #10b981; background: #ecfdf5; }
 .empty { margin-top: 22px; padding: 20px; text-align: center; color: var(--text-tertiary); border: 1px dashed var(--border-strong); border-radius: var(--r-lg); }
 .summaryGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .summaryCard { padding: 22px; border: 1px solid var(--border); border-radius: var(--r-xl); background: var(--card); box-shadow: var(--shadow-sm); }

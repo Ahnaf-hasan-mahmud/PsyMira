@@ -15,7 +15,10 @@ export default function JournalPage() {
   const [selectedDate, setSelectedDate] = useState(today);
   const [dayNotes, setDayNotes] = useState("");
   const [goals, setGoals] = useState("");
+  const [goalCompleted, setGoalCompleted] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  const isPast = selectedDate !== today;
 
   const selected = useMemo(
     () => entries.find((entry) => entry.date === selectedDate),
@@ -25,11 +28,12 @@ export default function JournalPage() {
   useEffect(() => {
     setDayNotes(selected?.dayNotes ?? "");
     setGoals(selected?.goals ?? "");
+    setGoalCompleted(selected?.goalCompleted ?? false);
     setSaved(false);
   }, [selected]);
 
   function handleSave() {
-    saveDiaryEntry({ date: selectedDate, dayNotes: dayNotes.trim(), goals: goals.trim() });
+    saveDiaryEntry({ date: selectedDate, dayNotes: dayNotes.trim(), goals: goals.trim(), goalCompleted });
     setSaved(true);
   }
 
@@ -67,7 +71,8 @@ export default function JournalPage() {
               <textarea
                 value={dayNotes}
                 onChange={(event) => { setDayNotes(event.target.value); setSaved(false); }}
-                placeholder="Today I…"
+                placeholder={isPast ? "No notes for this day." : "Today I…"}
+                readOnly={isPast}
                 rows={7}
               />
             </label>
@@ -78,14 +83,31 @@ export default function JournalPage() {
               <textarea
                 value={goals}
                 onChange={(event) => { setGoals(event.target.value); setSaved(false); }}
-                placeholder="I would like to…"
+                placeholder={isPast ? "No goals for this day." : "I would like to…"}
+                readOnly={isPast}
                 rows={4}
               />
+              {isPast && goals.trim().length > 0 && (
+                <label className={styles.checkboxWrapper} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px', cursor: 'pointer' }}>
+                  <input 
+                    type="checkbox" 
+                    checked={goalCompleted} 
+                    onChange={(e) => {
+                      setGoalCompleted(e.target.checked);
+                      setSaved(false);
+                    }} 
+                    style={{ width: '18px', height: '18px', accentColor: 'var(--accent)' }}
+                  />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text)' }}>I completed this goal</span>
+                </label>
+              )}
             </label>
 
-            <button className={styles.primaryButton} type="button" onClick={handleSave}>
-              <Check size={17} /> {saved ? "Entry saved" : "Save journal entry"}
-            </button>
+            {!isPast || (isPast && goals.trim().length > 0) ? (
+              <button className={styles.primaryButton} type="button" onClick={handleSave}>
+                <Check size={17} /> {saved ? "Entry saved" : (isPast ? "Save goal status" : "Save journal entry")}
+              </button>
+            ) : null}
           </motion.section>
 
           <motion.aside className={styles.history} variants={fadeUp}>
@@ -96,7 +118,7 @@ export default function JournalPage() {
                 <button
                   type="button"
                   key={entry.date}
-                  className={`${styles.entryButton} ${entry.date === selectedDate ? styles.entryActive : ""}`}
+                  className={`${styles.entryButton} ${entry.date === selectedDate ? styles.entryActive : ""} ${entry.goalCompleted ? styles.entryCompleted : ""}`}
                   onClick={() => setSelectedDate(entry.date)}
                 >
                   <span>{formatDate(entry.date)}</span>
