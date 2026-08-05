@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { Search, Bell } from "@/components/ui/Icons";
+import NotificationDropdown from "./NotificationDropdown";
+import GlobalSearch from "./GlobalSearch";
 import styles from "./TopNav.module.css";
 
 /** Dashboard top bar: greeting, search, notifications, avatar. */
@@ -46,19 +47,11 @@ export default function TopNav({ name = "Aria" }: { name?: string }) {
       </div>
 
       <div className={styles.actions}>
-        <div className={styles.search}>
-          <Search size={18} />
-          <input
-            type="text"
-            placeholder="Search stories, reflections…"
-            aria-label="Search"
-          />
+        <div className={styles.searchWrap}>
+          <GlobalSearch />
         </div>
 
-        <button className={styles.iconBtn} aria-label="Notifications">
-          <Bell size={20} />
-          <span className={styles.badge} />
-        </button>
+        <NotificationDropdown />
 
         <Link href="/dashboard/profile" aria-label="Your profile">
           <button className={styles.avatar} tabIndex={-1}>

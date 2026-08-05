@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { reflectionMix } from "./sampleData";
 import { createClient } from "./supabase/client";
+import { notifyActivityLogged, notifyStreakMilestone } from "./notifications";
 
 const STORAGE_KEY = "psymira.activity.v2";
 const CHANGE_EVENT = "psymira:activity-change";
@@ -87,22 +88,27 @@ export async function recordActivity(activity: Omit<Activity, "id" | "createdAt"
   // Sync to Cloud
   const supabase = createClient();
   if (supabase) {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session?.user) {
-      await supabase.from('activities').insert({
-        user_id: session.user.id,
-        kind: activity.kind,
-        minutes: activity.minutes,
-        mood: activity.mood,
-        calm: activity.calm,
-        story_id: activity.storyId,
-        title: activity.title,
-        emotion: activity.emotion,
-        technique: activity.technique,
-        game_id: activity.gameId,
-        created_at: next.createdAt,
-      });
-    }
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await supabase.from('activities').insert({
+          user_id: session.user.id,
+          kind: activity.kind,
+          minutes: activity.minutes,
+          mood: activity.mood,
+          calm: activity.calm,
+          story_id: activity.storyId,
+          title: activity.title,
+          emotion: activity.emotion,
+          technique: activity.technique,
+          game_id: activity.gameId,
+          created_at: next.createdAt,
+        });
+
+        // Auto-trigger in-app notification
+        const xpMap: Record<string, number> = { story: 120, breathing: 20, game: 15, mood: 5 };
+        const xp = xpMap[activity.kind] ?? 10;
+        await notifyActivityLogged(session.user.id, activity.kind, xp);
+      }
   }
 }
 
@@ -230,6 +236,28 @@ export function useActivityDashboard() {
       if (uniqueDays.includes(key)) streak += 1;
       else if (offset > 0 || completed.length > 0) break;
     }
+    
+    // New Advanced Metrics
+    const validMoods = completed.filter(a => a.mood > 0).map(a => a.mood);
+    const avgMood = validMoods.length ? Math.round(validMoods.reduce((a,b)=>a+b,0) / validMoods.length) : 0;
+    const mostLoggedMood = mixData.length > 0 && mixData[0].value > 0 ? mixData[0].name : "None";
+    
+    // Favorites
+    const getFav = (kind: string, keyFunc: (a: Activity) => string | undefined) => {
+      const items = completed.filter(a => a.kind === kind);
+      const counts = new Map<string, number>();
+      items.forEach(i => {
+        const k = keyFunc(i);
+        if (k) counts.set(k, (counts.get(k) || 0) + 1);
+      });
+      let best = "None", max = 0;
+      counts.forEach((v, k) => { if (v > max) { max = v; best = k; } });
+      return best;
+    };
+    
+    const favBreathing = getFav("breathing", a => a.technique);
+    const favStory = getFav("story", a => a.emotion); // using emotion as proxy for theme
+    const favGame = getFav("game", a => a.title);
 
     return {
       moodData,
@@ -241,6 +269,11 @@ export function useActivityDashboard() {
       xp,
       streak,
       totalActivities: completed.length,
+      avgMood,
+      mostLoggedMood,
+      favBreathing,
+      favStory,
+      favGame,
     };
   }, [activities]);
 

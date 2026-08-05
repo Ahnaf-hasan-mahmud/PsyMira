@@ -1,0 +1,121 @@
+.wrap {
+  position: relative;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  height: 46px;
+  width: 280px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 23px; /* Pill */
+  color: var(--text-tertiary);
+  transition: all 0.2s ease-out;
+}
+
+.searchBox.focused {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.14);
+}
+
+.searchBox input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  width: 100%;
+  color: var(--text);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  min-width: 300px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(167, 139, 250, 0.08);
+  overflow: hidden;
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.dropdown::-webkit-scrollbar {
+  width: 4px;
+}
+.dropdown::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child {
+  border-bottom: none;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  padding: 4px 16px 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.item:hover {
+  background: var(--bg);
+}
+
+.icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.actInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.actTitle {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.actSub {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}

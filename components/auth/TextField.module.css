@@ -91,6 +91,12 @@
   line-height: 1.2;
 }
 
+/* Hide native browser password reveal icons (e.g. Edge) */
+.input::-ms-reveal,
+.input::-ms-clear {
+  display: none;
+}
+
 /* ---- Date input: same layout, just hide the placeholder until focused ---- */
 .input[type="date"] {
   font-size: 14px;

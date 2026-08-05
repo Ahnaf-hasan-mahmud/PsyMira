@@ -1,39 +1,218 @@
 .page {
-  min-height: 100dvh;
-  background: var(--grad-page);
-  padding: 24px;
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.split {
-  width: 100%;
-  max-width: 1100px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-2xl);
-  box-shadow: var(--shadow-xl);
-  padding: 16px;
-  min-height: 760px;
-}
-.split > div:last-child {
-  padding: 28px 40px;
+  background: var(--bg);
 }
 
-@media (max-width: 900px) {
+.split {
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+@media (min-width: 1024px) {
   .split {
-    grid-template-columns: 1fr;
-    min-height: 0;
-    max-width: 480px;
+    flex-direction: row;
+    height: 100vh;
   }
-  /* hide the heavy illustration on small screens for focus */
-  .split > aside {
-    display: none;
+}
+
+.formPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+  background: var(--bg);
+}
+
+@media (min-width: 1024px) {
+  .formPanel {
+    flex: 0 0 55%;
   }
-  .split > div:last-child {
-    padding: 28px 22px 36px;
-  }
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* Progress Indicator */
+.progressWrap {
+  margin-bottom: 40px;
+}
+
+.progressText {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* Form Styles */
+.actionsRow {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+/* Custom Select & Inputs */
+.selectWrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.selectLabel {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  background: var(--bg);
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  z-index: 10;
+}
+
+.select {
+  width: 100%;
+  min-height: 58px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  font-size: 15px;
+  color: var(--text);
+  outline: none;
+  transition: all 0.3s var(--ease-out);
+  appearance: none;
+}
+
+.select:focus {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.15);
+}
+
+.errorText {
+  font-size: 13px;
+  color: var(--danger);
+  margin: 0;
+}
+
+/* Chips & Cards */
+.sectionLabel {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.chipGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  background: var(--card);
+}
+
+.chipSelected {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.occCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.occCard:hover {
+  background: var(--card);
+  border-color: var(--accent-soft);
+}
+
+.occSelected {
+  background: rgba(167, 139, 250, 0.1) !important;
+  border-color: var(--accent) !important;
+}
+
+.occIcon {
+  font-size: 24px;
+}
+
+.occText {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Trust Section */
+.trustSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  padding: 16px;
+  background: rgba(167, 139, 250, 0.05);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.trustSection svg {
+  color: var(--accent);
+  flex-shrink: 0;
 }
