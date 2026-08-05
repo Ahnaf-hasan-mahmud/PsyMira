@@ -18,6 +18,7 @@ import {
   Close,
   Moon,
   Gamepad,
+  Lightbulb,
 } from "@/components/ui/Icons";
 import styles from "./Sidebar.module.css";
 
@@ -30,6 +31,7 @@ const NAV = [
   { label: "Sleep", icon: Moon, href: "/sleep" },
   { label: "Journal", icon: Feather, href: "/dashboard/journal" },
   { label: "Insights", icon: Compass, href: "/dashboard/insights" },
+  { label: "For You", icon: Lightbulb, href: "/dashboard/suggestions" },
 ];
 
 /**
@@ -59,7 +61,9 @@ export default function Sidebar() {
           const Icon = item.icon;
           const active =
             item.href !== "#" && pathname
-              ? pathname === item.href || pathname.startsWith(`${item.href}/`)
+              ? item.href === "/dashboard"
+                ? pathname === "/dashboard"
+                : pathname === item.href || pathname.startsWith(`${item.href}/`)
               : false;
           return (
             <li key={item.label}>
@@ -86,12 +90,6 @@ export default function Sidebar() {
       </ul>
 
       <div className={styles.bottom}>
-        <div className={styles.upsell}>
-          <span className={styles.upsellTitle}>Keep growing 🌙</span>
-          <p className={styles.upsellBody}>
-            You're on a 5-day streak. A new story unlocks tomorrow.
-          </p>
-        </div>
         <button
           type="button"
           className={styles.logout}

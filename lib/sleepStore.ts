@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createClient } from "./supabase/client";
 
 const STORAGE_KEY = "psymira.sleep.v1";
 const CHANGE_EVENT = "psymira:sleep-change";
@@ -94,15 +95,14 @@ export function readSleepData(): SleepEntry[] {
 export function calculateHoursSlept(bedtime: string, wakeTime: string): number {
   const [bH, bM] = bedtime.split(":").map(Number);
   const [wH, wM] = wakeTime.split(":").map(Number);
-  
+
   let bedDate = new Date();
   bedDate.setHours(bH, bM, 0, 0);
-  
+
   let wakeDate = new Date();
   wakeDate.setHours(wH, wM, 0, 0);
-  
+
   if (wakeDate <= bedDate) {
-    // assumption: if wake time is earlier in the day than bedtime, they slept overnight
     wakeDate.setDate(wakeDate.getDate() + 1);
   }
 
@@ -110,59 +110,135 @@ export function calculateHoursSlept(bedtime: string, wakeTime: string): number {
   return Number((diffMs / (1000 * 60 * 60)).toFixed(1));
 }
 
-export function recordSleep(entry: Omit<SleepEntry, "id" | "createdAt" | "hoursSlept">) {
+/** Write to localStorage + sync to Supabase if authenticated */
+export async function recordSleep(entry: Omit<SleepEntry, "id" | "createdAt" | "hoursSlept">) {
   if (typeof window === "undefined") return;
+
+  const hoursSlept = calculateHoursSlept(entry.bedtime, entry.wakeTime);
   const next: SleepEntry = {
     ...entry,
-    hoursSlept: calculateHoursSlept(entry.bedtime, entry.wakeTime),
+    hoursSlept,
     id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
     createdAt: new Date().toISOString(),
   };
-  
+
+  // 1. Write localStorage immediately (optimistic)
   const existing = readSleepData();
-  // Filter out any existing entry for the same date (allow overriding)
-  const filtered = existing.filter(e => e.date !== next.date);
-  
+  const filtered = existing.filter((e) => e.date !== next.date);
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...filtered, next]));
   window.dispatchEvent(new Event(CHANGE_EVENT));
+
+  // 2. Sync to Supabase in the background
+  try {
+    const supabase = createClient();
+    if (supabase) {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session?.user) {
+        // Upsert — unique constraint on (user_id, date)
+        await supabase.from("sleep_entries").upsert(
+          {
+            user_id: session.user.id,
+            date: next.date,
+            bedtime: next.bedtime,
+            wake_time: next.wakeTime,
+            hours_slept: next.hoursSlept,
+            quality: next.quality,
+            notes: next.notes ?? null,
+          },
+          { onConflict: "user_id,date" }
+        );
+      }
+    }
+  } catch {
+    // Supabase sync failure is non-fatal; local data is already saved
+  }
+}
+
+/** Fetch from Supabase if authenticated, otherwise fall back to localStorage */
+async function fetchSleepEntries(): Promise<SleepEntry[]> {
+  try {
+    const supabase = createClient();
+    if (supabase) {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { data, error } = await supabase
+          .from("sleep_entries")
+          .select("*")
+          .order("date", { ascending: true });
+
+        if (!error && data && data.length > 0) {
+          const mapped: SleepEntry[] = data.map((row) => ({
+            id: row.id,
+            date: row.date,
+            bedtime: row.bedtime,
+            wakeTime: row.wake_time,
+            hoursSlept: Number(row.hours_slept),
+            quality: row.quality as SleepQuality,
+            notes: row.notes ?? undefined,
+            createdAt: row.created_at,
+          }));
+          // Update local cache
+          if (typeof window !== "undefined") {
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(mapped));
+          }
+          return mapped;
+        }
+      }
+    }
+  } catch {
+    // Fall through to localStorage
+  }
+  return readSleepData();
 }
 
 export function useSleepDashboard() {
   const [entries, setEntries] = useState<SleepEntry[]>([]);
 
   useEffect(() => {
-    function load() {
+    // Hydrate from localStorage immediately, then sync from Supabase
+    setEntries(readSleepData());
+    fetchSleepEntries().then(setEntries);
+
+    function onLocalChange() {
       setEntries(readSleepData());
     }
-    load();
-    window.addEventListener(CHANGE_EVENT, load);
-    return () => window.removeEventListener(CHANGE_EVENT, load);
+    window.addEventListener(CHANGE_EVENT, onLocalChange);
+    return () => window.removeEventListener(CHANGE_EVENT, onLocalChange);
   }, []);
 
   const todayStr = new Date().toISOString().split("T")[0];
-  const hasLoggedToday = entries.some(e => e.date === todayStr);
+  const hasLoggedToday = entries.some((e) => e.date === todayStr);
 
-  const sortedEntries = [...entries].sort((a, b) => 
-    new Date(a.date).getTime() - new Date(b.date).getTime()
+  const sortedEntries = [...entries].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   );
 
   const last7Days = sortedEntries.slice(-7);
-  
-  const avgSleepHours = last7Days.length > 0 
-    ? Number((last7Days.reduce((sum, e) => sum + e.hoursSlept, 0) / last7Days.length).toFixed(1))
-    : 0;
+
+  const avgSleepHours =
+    last7Days.length > 0
+      ? Number(
+          (
+            last7Days.reduce((sum, e) => sum + e.hoursSlept, 0) /
+            last7Days.length
+          ).toFixed(1)
+        )
+      : 0;
 
   const bestNight = last7Days.reduce((best, current) => {
     if (!best) return current;
     return current.hoursSlept > best.hoursSlept ? current : best;
   }, null as SleepEntry | null);
 
-  // Map to a format useful for charts
-  const chartData = last7Days.map(e => ({
+  const chartData = last7Days.map((e) => ({
     date: e.date,
     dayName: new Date(e.date).toLocaleDateString("en-US", { weekday: "short" }),
     hours: e.hoursSlept,
-    quality: e.quality
+    quality: e.quality,
   }));
 
   return {

@@ -103,3 +103,41 @@ create policy "Users can insert their own activities"
 
 create index if not exists activities_user_created_idx
   on public.activities (user_id, created_at desc);
+
+-- ---- Sleep Entries (one row per night) ----------------------
+create table if not exists public.sleep_entries (
+  id            uuid primary key default gen_random_uuid(),
+  user_id       uuid not null references auth.users (id) on delete cascade,
+  date          date not null,                     -- the night's date (YYYY-MM-DD)
+  bedtime       text not null,                     -- "HH:mm" 24h
+  wake_time     text not null,                     -- "HH:mm" 24h
+  hours_slept   numeric(4,1) not null,             -- computed duration
+  quality       text not null,                     -- 'poor' | 'okay' | 'good' | 'great'
+  notes         text,
+  created_at    timestamptz not null default now()
+);
+
+alter table public.sleep_entries enable row level security;
+
+create policy "Sleep entries are viewable by their owner"
+  on public.sleep_entries for select
+  using (auth.uid() = user_id);
+
+create policy "Users can insert their own sleep entries"
+  on public.sleep_entries for insert
+  with check (auth.uid() = user_id);
+
+create policy "Users can update their own sleep entries"
+  on public.sleep_entries for update
+  using (auth.uid() = user_id);
+
+create policy "Users can delete their own sleep entries"
+  on public.sleep_entries for delete
+  using (auth.uid() = user_id);
+
+-- One entry per user per date (upsert friendly)
+create unique index if not exists sleep_entries_user_date_idx
+  on public.sleep_entries (user_id, date desc);
+
+create index if not exists sleep_entries_user_created_idx
+  on public.sleep_entries (user_id, created_at desc);
