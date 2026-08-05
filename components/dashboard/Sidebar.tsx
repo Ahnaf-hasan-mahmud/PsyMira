@@ -28,7 +28,7 @@ const NAV = [
   { label: "Breathing", icon: Wind, href: "/breathing" },
   { label: "Relaxation", icon: Waves, href: "/relaxation" },
   { label: "Games", icon: Gamepad, href: "/games" },
-  { label: "Sleep", icon: Moon, href: "/sleep" },
+  { label: "Sleep", icon: Moon, href: "/dashboard/sleep" },
   { label: "Journal", icon: Feather, href: "/dashboard/journal" },
   { label: "Insights", icon: Compass, href: "/dashboard/insights" },
   { label: "For You", icon: Lightbulb, href: "/dashboard/suggestions" },

@@ -44,12 +44,7 @@ export default function SleepPage() {
     <main className={styles.page}>
       <ParticleField count={25} className={styles.particles} />
 
-      <header className={styles.bar}>
-        <div /> {/* Placeholder for logo if we want, or just empty space */}
-        <Link href="/dashboard" className={styles.exit} aria-label="Back to dashboard">
-          <Close size={20} />
-        </Link>
-      </header>
+
 
       <div className={styles.container}>
         {/* ── Page Header ── */}
@@ -171,16 +166,55 @@ export default function SleepPage() {
 
               {chartData.length > 0 ? (
                 <div className={styles.chartWrap}>
-                  <SleepBarChart data={chartData} height={250} theme="dark" />
+                  <SleepBarChart data={chartData} height={250} theme="light" />
                 </div>
               ) : (
-                <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#a78bfa", fontSize: "0.9rem" }}>
+                <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
                   Log two nights to see the chart.
                 </div>
               )}
             </div>
           </motion.div>
         </div>
+
+        {/* ── 7-Day History ── */}
+        {entries.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className={`${styles.card} ${styles.historyCard}`}>
+              <div className={styles.cardHead}>
+                <h3 className={styles.cardTitle}>Last 7 Days</h3>
+                <p className={styles.cardSub}>Your recent sleep history.</p>
+              </div>
+              <div className={styles.historyList}>
+                {[...entries].reverse().slice(0, 7).map((entry) => {
+                  const q = QUALITIES.find((x) => x.value === entry.quality);
+                  return (
+                    <div key={entry.date} className={styles.historyRow}>
+                      <span className={styles.historyDate}>
+                        {new Date(entry.date).toLocaleDateString("en-US", {
+                          weekday: "short",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                      <div className={styles.historyDetails}>
+                        <span className={styles.historyHours}>{entry.hoursSlept}h</span>
+                        <span className={styles.historyTimes}>
+                          {entry.bedtime} - {entry.wakeTime}
+                        </span>
+                        <span className={styles.historyQuality}>{q?.label}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
     </main>
   );
