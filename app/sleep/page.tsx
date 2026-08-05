@@ -1,23 +1,20 @@
 "use client";
 
-import { useState, useCallback, FormEvent, useEffect } from "react";
+import { useState, useCallback, FormEvent } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import Logo from "@/components/ui/Logo";
-import Button from "@/components/ui/Button";
-import { Close } from "@/components/ui/Icons";
+import { motion } from "framer-motion";
+import { Close, Moon, Sparkle } from "@/components/ui/Icons";
 import ParticleField from "@/components/illustrations/ParticleField";
 import { recordSleep, SleepQuality, useSleepDashboard } from "@/lib/sleepStore";
 import SleepBarChart from "@/components/charts/SleepBarChart";
-import { fadeUp, stagger } from "@/lib/motion";
 import styles from "./page.module.css";
 
-const QUALITY_EMOJIS: Record<SleepQuality, string> = {
-  poor: "🥱",
-  okay: "😐",
-  good: "🙂",
-  great: "😄",
-};
+const QUALITIES: { value: SleepQuality; label: string }[] = [
+  { value: "poor", label: "Poor" },
+  { value: "okay", label: "Fair" },
+  { value: "good", label: "Good" },
+  { value: "great", label: "Excellent" },
+];
 
 export default function SleepPage() {
   const { entries, hasLoggedToday, avgSleepHours, chartData } = useSleepDashboard();
@@ -26,11 +23,10 @@ export default function SleepPage() {
   const [wakeTime, setWakeTime] = useState("07:00");
   const [quality, setQuality] = useState<SleepQuality | null>(null);
   
-  // Format dates for the form
-  const todayDate = new Date();
-  const yestDate = new Date(todayDate);
-  yestDate.setDate(yestDate.getDate() - 1);
-  const todayStr = todayDate.toISOString().split("T")[0];
+  const todayStr = new Date().toISOString().split("T")[0];
+
+  // Calculate nights under 6h
+  const nightsUnder6 = entries.slice(-7).filter(e => e.hoursSlept < 6).length;
 
   const handleSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
@@ -49,158 +45,142 @@ export default function SleepPage() {
       <ParticleField count={25} className={styles.particles} />
 
       <header className={styles.bar}>
-        <Logo />
+        <div /> {/* Placeholder for logo if we want, or just empty space */}
         <Link href="/dashboard" className={styles.exit} aria-label="Back to dashboard">
           <Close size={20} />
         </Link>
       </header>
 
       <div className={styles.container}>
-        <motion.div 
+        {/* ── Page Header ── */}
+        <motion.header 
           className={styles.header}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className={styles.title}>Sleep Tracker</h1>
-          <p className={styles.subtitle}>How is your rest affecting your days?</p>
-        </motion.div>
-
-        <motion.div
-          className={styles.analyticsCard}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className={styles.analyticsHead}>
-            <div>
-              <h2 className={styles.cardTitle}>7-Day Trend</h2>
-              <span className={styles.cardSub}>Hours of sleep per night</span>
-            </div>
-            <div className={styles.avgBox}>
-              <span className={styles.avgValue}>{avgSleepHours}</span>
-              <span className={styles.avgLabel}>hr avg</span>
-            </div>
+          <div className={styles.moonIcon}>
+            <Moon size={24} />
           </div>
-          <div className={styles.chartWrap}>
-            <SleepBarChart data={chartData} height={180} />
+          <div className={styles.headerContent}>
+            <h2 className={styles.supertitle}>REST AND RECOVERY</h2>
+            <h1 className={styles.title}>Sleep Tracker</h1>
+            <p className={styles.subtitle}>
+              Log how long and how well you slept. PsyMira tracks your nights so you can understand the connection between your rest and your daily wellbeing.
+            </p>
           </div>
-        </motion.div>
+        </motion.header>
 
-        <motion.form 
-          className={styles.form}
-          onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {hasLoggedToday ? (
-            <div style={{ textAlign: "center", padding: "40px 0" }}>
-              <span style={{ fontSize: "3rem" }}>✨</span>
-              <h2 style={{ marginTop: 16, fontSize: "1.2rem", fontWeight: 600 }}>Sleep logged for today</h2>
-              <p style={{ marginTop: 8, color: "var(--text-secondary)" }}>
-                You can log again tomorrow morning.
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className={styles.timeInputs}>
-                <div className={styles.inputGroup}>
-                  <label className={styles.label}>Bedtime</label>
-                  <input 
-                    type="time" 
-                    className={styles.timePicker} 
-                    value={bedtime}
-                    onChange={(e) => setBedtime(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label className={styles.label}>Wake Time</label>
-                  <input 
-                    type="time" 
-                    className={styles.timePicker} 
-                    value={wakeTime}
-                    onChange={(e) => setWakeTime(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
+        {/* ── Two Column Grid ── */}
+        <div className={styles.grid}>
+          {/* Left Column: Logging Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className={styles.card}>
+              {!hasLoggedToday ? (
+                <form className={styles.form} onSubmit={handleSubmit}>
+                  <div className={styles.cardHead}>
+                    <h3 className={styles.cardTitle}>Last night</h3>
+                    <p className={styles.cardSub}>Log it while it is still fresh.</p>
+                  </div>
 
-              <div className={styles.qualityGroup}>
-                <label className={styles.label}>Quality</label>
-                <div className={styles.qualityOptions}>
-                  {(Object.keys(QUALITY_EMOJIS) as SleepQuality[]).map((q) => (
-                    <button
-                      key={q}
-                      type="button"
-                      className={styles.qualityBtn}
-                      data-active={quality === q}
-                      onClick={() => setQuality(q)}
+                  {/* Bedtime & Wake Time */}
+                  <div className={styles.timeInputs}>
+                    <div className={styles.inputGroup}>
+                      <span className={styles.label}>Bedtime</span>
+                      <input
+                        type="time"
+                        value={bedtime}
+                        onChange={(e) => setBedtime(e.target.value)}
+                        required
+                        className={styles.timePicker}
+                      />
+                    </div>
+                    <div className={styles.inputGroup}>
+                      <span className={styles.label}>Wake Time</span>
+                      <input
+                        type="time"
+                        value={wakeTime}
+                        onChange={(e) => setWakeTime(e.target.value)}
+                        required
+                        className={styles.timePicker}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Quality Selector */}
+                  <div className={styles.qualityGroup}>
+                    <span className={styles.label}>Quality</span>
+                    <div className={styles.qualityOptions}>
+                      {QUALITIES.map((q) => (
+                        <button
+                          key={q.value}
+                          type="button"
+                          className={styles.qualityBtn}
+                          data-active={quality === q.value}
+                          onClick={() => setQuality(q.value)}
+                        >
+                          {q.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className={styles.submitWrap}>
+                    <button 
+                      type="submit" 
+                      className={styles.logBtn}
+                      disabled={!quality}
                     >
-                      <span className={styles.qualityEmoji}>{QUALITY_EMOJIS[q]}</span>
-                      <span className={styles.qualityLabel}>
-                        {q.charAt(0).toUpperCase() + q.slice(1)}
-                      </span>
+                      Log sleep
                     </button>
-                  ))}
+
+                    <div className={styles.summaryBox}>
+                      <span>Average across 7 nights: <strong>{avgSleepHours || "—"}h</strong></span>
+                      <span>Nights under 6h: <strong>{nightsUnder6}</strong></span>
+                    </div>
+                  </div>
+                </form>
+              ) : (
+                <div className={styles.loggedState}>
+                  <div className={styles.loggedIcon}>
+                    <Sparkle size={32} />
+                  </div>
+                  <h2>All set for today</h2>
+                  <p>Your sleep has been recorded successfully.</p>
                 </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Right Column: Chart */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className={styles.chartCard}
+          >
+            <div className={styles.card} style={{ height: "100%" }}>
+              <div className={styles.cardHead}>
+                <h3 className={styles.cardTitle}>Sleep duration</h3>
+                <p className={styles.cardSub}>Hours per night.</p>
               </div>
 
-              <div className={styles.submitBtn}>
-                <Button type="submit" disabled={!quality} style={{ width: "100%" }}>
-                  Save Sleep Log
-                </Button>
-              </div>
-            </>
-          )}
-        </motion.form>
-
-        <motion.div 
-          className={styles.history}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h2 className={styles.cardTitle}>Recent History</h2>
-          
-          <div className={styles.historyList}>
-            <AnimatePresence>
-              {[...entries].reverse().slice(0, 7).map((entry, i) => (
-                <motion.div 
-                  key={entry.id} 
-                  className={styles.historyCard}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <div>
-                    <div className={styles.historyDate}>
-                      {new Date(entry.date).toLocaleDateString("en-US", { 
-                        weekday: "short", 
-                        month: "short", 
-                        day: "numeric" 
-                      })}
-                    </div>
-                    <div className={styles.historyTimes}>
-                      {entry.bedtime} – {entry.wakeTime}
-                    </div>
-                  </div>
-                  <div className={styles.historyStats}>
-                    <span className={styles.historyHours}>{entry.hoursSlept}h</span>
-                    <span className={styles.historyEmoji}>{QUALITY_EMOJIS[entry.quality]}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-            
-            {entries.length === 0 && (
-              <p style={{ color: "var(--text-secondary)", fontStyle: "italic", textAlign: "center", padding: "20px 0" }}>
-                No sleep history yet. Log your sleep tomorrow morning!
-              </p>
-            )}
-          </div>
-        </motion.div>
+              {chartData.length > 0 ? (
+                <div className={styles.chartWrap}>
+                  <SleepBarChart data={chartData} height={250} theme="dark" />
+                </div>
+              ) : (
+                <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#a78bfa", fontSize: "0.9rem" }}>
+                  Log two nights to see the chart.
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </main>
   );

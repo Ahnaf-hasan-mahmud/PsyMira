@@ -1,7 +1,9 @@
 .page {
   position: relative;
   min-height: 100dvh;
-  background: var(--grad-page);
+  /* Deep dark purple night theme */
+  background: #0f0a1f; 
+  color: #f5f3ff;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -9,127 +11,139 @@
 
 .particles {
   z-index: 0;
+  opacity: 0.3; /* lower opacity for dark mode */
 }
 
+/* ── Top Bar ── */
 .bar {
   position: relative;
   z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 32px;
+  padding: 22px 40px;
 }
 
 .exit {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--border);
-  transition: all 0.3s var(--ease-out);
+  color: #a78bfa;
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  transition: all 0.3s ease;
 }
 .exit:hover {
-  color: var(--text);
-  background: #fff;
+  color: #fff;
+  background: rgba(167, 139, 250, 0.2);
+  transform: scale(1.05);
 }
 
+/* ── Container & Header ── */
 .container {
   position: relative;
   z-index: 2;
   flex: 1;
   width: 100%;
-  max-width: 600px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 24px 32px 80px;
+  padding: 24px 40px 80px;
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 36px;
 }
 
 .header {
-  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.moonIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a78bfa;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.supertitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #a78bfa;
+  margin: 0 0 8px;
 }
 
 .title {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(2.2rem, 4vw, 2.8rem);
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: var(--text);
+  margin: 0 0 12px;
+  color: #fff;
 }
 
 .subtitle {
-  margin-top: 12px;
   font-size: 1.05rem;
-  color: var(--text-secondary);
+  color: #c4b5fd;
+  line-height: 1.5;
+  max-width: 700px;
+  margin: 0;
 }
 
-/* Form Styles */
-.analyticsCard,
-.form {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r-2xl);
+/* ── Two Column Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* ── Cards ── */
+.card {
+  background: #1a1433;
+  border: 1px solid #2e2559;
+  border-radius: 20px;
   padding: 32px;
-  box-shadow: var(--shadow-lg);
-}
-
-.analyticsCard {
   display: flex;
   flex-direction: column;
-  gap: 24px;
 }
 
-.analyticsHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+.cardHead {
+  margin-bottom: 24px;
 }
 
 .cardTitle {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text);
+  color: #fff;
+  margin: 0 0 6px;
 }
 
 .cardSub {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.avgBox {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  text-align: right;
-}
-
-.avgValue {
-  font-family: var(--font-heading);
-  font-size: 2.2rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--text);
-}
-
-.avgLabel {
   font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+  color: #a78bfa;
+  margin: 0;
 }
 
-.chartWrap {
-  width: 100%;
-}
-
+/* ── Form Inputs ── */
 .form {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  flex: 1;
 }
 
 .timeInputs {
@@ -141,15 +155,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
 }
 
 .timePicker {
@@ -157,123 +169,163 @@
   padding: 14px 16px;
   font-family: var(--font-mono);
   font-size: 1.2rem;
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.8);
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-md);
-  transition: border-color 0.3s ease;
+  color: #fff;
+  background: #231b42;
+  border: 1px solid #3d3170;
+  border-radius: 12px;
+  transition: all 0.2s ease;
   outline: none;
+  color-scheme: dark; /* makes the browser time picker icon dark mode */
 }
 .timePicker:focus {
-  border-color: var(--accent);
+  border-color: #a78bfa;
+  background: #2b2254;
 }
 
+/* ── Quality Pills ── */
 .qualityGroup {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .qualityOptions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .qualityBtn {
   flex: 1;
-  padding: 16px 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-lg);
-  transition: all 0.25s ease;
+  padding: 12px 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #c4b5fd;
+  background: transparent;
+  border: 1px solid #3d3170;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 .qualityBtn:hover {
-  background: #fff;
-  border-color: var(--accent-soft);
+  background: rgba(167, 139, 250, 0.05);
+  border-color: #7c3aed;
+  color: #fff;
 }
 .qualityBtn[data-active="true"] {
-  background: #fff;
-  border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(139, 109, 240, 0.15);
+  background: rgba(167, 139, 250, 0.15);
+  border-color: #a78bfa;
+  color: #fff;
 }
 
-.qualityEmoji {
-  font-size: 1.8rem;
-}
-
-.qualityLabel {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-.qualityBtn[data-active="true"] .qualityLabel {
-  color: var(--accent-deep);
-}
-
-.submitBtn {
-  margin-top: 8px;
-}
-
-/* History Section */
-.history {
+/* ── Submit & Summary ── */
+.submitWrap {
+  margin-top: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.historyList {
+.logBtn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  background: #8b5cf6;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.logBtn:hover:not(:disabled) {
+  background: #7c3aed;
+  transform: translateY(-1px);
+}
+.logBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.summaryBox {
+  padding: 16px;
+  border: 1px solid #2e2559;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-.historyCard {
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.historyDate {
-  font-weight: 600;
-  color: var(--text);
-  font-size: 1.05rem;
-}
-
-.historyTimes {
+  gap: 4px;
   font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-top: 4px;
+  color: #a78bfa;
+}
+.summaryBox strong {
+  color: #fff;
+  font-weight: 600;
 }
 
-.historyStats {
+/* ── Right Column Chart ── */
+.chartWrap {
+  width: 100%;
+  height: 250px;
+  margin-top: 20px;
+}
+
+.chartCard {
+  flex: 1;
+}
+
+/* ── Logged State ── */
+.loggedState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  padding: 40px 0;
+  color: #a78bfa;
+}
+
+.loggedIcon {
+  width: 64px;
+  height: 64px;
+  background: rgba(167, 139, 250, 0.15);
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 12px;
-  text-align: right;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: 20px;
 }
 
-.historyHours {
-  font-family: var(--font-heading);
+.loggedState h2 {
   font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--text);
+  color: #fff;
+  margin: 0 0 8px;
 }
 
-.historyEmoji {
-  font-size: 1.4rem;
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .timeInputs {
+@media (max-width: 640px) {
+  .bar {
+    padding: 20px 24px;
+  }
+  .container {
+    padding: 16px 24px 60px;
+    gap: 32px;
+  }
+  .title {
+    font-size: 2rem;
+  }
+  .header {
     flex-direction: column;
+  }
+  .moonIcon {
+    width: 48px;
+    height: 48px;
   }
 }
