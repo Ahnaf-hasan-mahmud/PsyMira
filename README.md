@@ -35,6 +35,10 @@ Practice mindfulness and listen to calming audio.
 ### 📖 Story-Based Mental Health Assessment
 Read interactive stories and answer scenario-based questions. Responses map to emotional traits (e.g., stillness, courage), provide insights into emotional well-being, and encourage self-reflection.
 
+### 🎮 Stress Relief Games
+Decompress with satisfying, web-based physics games.
+- Sand Simulator for tactile, low-stakes relaxation
+
 ### 📝 Journal
 Write about your thoughts and feelings every day.
 - Daily journal entries, reflection notes, and mood-linked journals
@@ -73,7 +77,7 @@ Stay motivated by building healthy habits. Completing activities (like stories o
 PsyMira
 │
 ├── app                  # Next.js App Router (pages & routes)
-│   ├── /auth, /dashboard, /breathing, /relaxation, /story, /sleep
+│   ├── /auth, /dashboard, /breathing, /relaxation, /story, /sleep, /games
 ├── components           # Reusable React components by feature
 ├── lib                  # Core business logic, data models, state management
 │   └── /supabase        # Supabase clients for SSR & client
